@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="intro-screen">
+        <div class="intro-text">
+            <!-- Вставляем SVG с текстом напрямую -->
+            <img src="{{ url_for('static', filename='img/arrow.svg') }}" alt="Полюби Работать">
+        </div>
+        <div class="intro-bear">
+            <img src="{{ url_for('static', filename='img/bear.svg') }}" alt="Медведь">
+        </div>
+    </div>
+{% endblock %}

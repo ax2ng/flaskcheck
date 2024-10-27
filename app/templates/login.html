@@ -1,24 +1,47 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1>Sign In</h1>
-  <form action="" method="post" novalidate>
-    {{ form.hidden_tag() }}
-    <p>
-      {{ form.username.label }}<br>
-      {{ form.username(size=32) }}<br>
-      {% for error in form.username.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-      {% endfor %}
-    </p>
-    <p>
-      {{ form.password.label }}<br>
-      {{ form.password(size=32) }}<br>
-      {% for error in form.password.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-      {% endfor %}
-    </p>
-    <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
-    <p>{{ form.submit() }}</p>
-  </form>
-<p>New User? <a href="{{ url_for('register') }}">Click to Register!</a></p>
+<div class="login-container">
+    <div class="login-form">
+        <!-- Логотип -->
+        <div class="logo-container">
+            <img id="dynamic-logo" src="{{ url_for('static', filename='img/logo.svg') }}" alt="Logo" class="logo">
+        </div>
+
+        <!-- Заголовок "Вход" вынесен из контейнера логотипа -->
+        <h2 class="login-title">Вход</h2>
+
+
+        <form action="" method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <div class="input-group">
+                {{ form.username.label(class="form-label") }}
+                {{ form.username(class="form-control", placeholder="Электронная почта или логин") }}
+                {% for error in form.username.errors %}
+                    <div class="error-message">{{ error }}</div>
+                {% endfor %}
+            </div>
+            <div class="input-group">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control", placeholder="Пароль") }}
+                {% for error in form.password.errors %}
+                    <div class="error-message">{{ error }}</div>
+                {% endfor %}
+            </div>
+            <div class="remember-me">
+                {{ form.remember_me(class="checkbox") }}
+                {{ form.remember_me.label(class="form-check-label") }}
+            </div>
+            <button type="submit" class="btn">Войти</button>
+            <p class="register-link">
+                <span>Вы новый пользователь?</span>
+                <a href="{{ url_for('register') }}">Зарегистрируйтесь здесь</a>
+            </p>
+        </form>
+    </div>
+</div>
+
+
+
 {% endblock %}
+
+

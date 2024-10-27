@@ -1,0 +1,511 @@
+/* light-theme.css */
+
+/* Сброс стилей */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Основные стили для светлой темы */
+html, body {
+    height: 100%; /* Устанавливаем высоту для html и body */
+    font-family: 'Roboto', sans-serif;
+    background: #3e3e3e;
+    color: #000000;
+}
+
+
+/* Обертка для flexbox */
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Устанавливаем минимальную высоту */
+}
+
+/* Фиксированный заголовок (header) */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #4a4a4a;
+    color: #ffffff;
+    padding: 1em;
+    z-index: 1000;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Контейнер для элементов в header */
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.site-title {
+    font-size: 1.5em;
+    color: #ffffff; /* Белый текст */
+}
+
+.nav-links a {
+    margin-right: 15px;
+    color: #ffffff; /* Белый цвет ссылок */
+    text-decoration: none;
+}
+
+.nav-links a:hover {
+    text-decoration: underline;
+    color: #ddd; /* Более светлый оттенок при наведении */
+}
+
+/* Центрирование содержимого для login.html */
+.content {
+    flex: 1; /* Занимает оставшееся пространство */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 55px;
+    padding-bottom: 5px; /* Добавляем отступы снизу */
+}
+
+.login-form {
+    width: 100%;
+    max-width: 400px; /* Устанавливаем большую ширину формы */
+    min-width: 400px;
+    padding: 1.5em;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Логотип и заголовок */
+.logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1.5em;
+}
+
+.logo {
+    width: 200px; /* Подбираем подходящий размер логотипа */
+    height: auto;
+    margin-bottom: 0.5em;
+    filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3)); /* Легкая тень для светлой темы */
+}
+
+}
+
+/* Позиционирование текста "Вход" */
+h2 {
+    color: #333333;
+    font-size: 2rem;
+    margin: 0;
+    margin-bottom: 0.5em;
+    text-align: left;
+    position: relative;
+    top: 5px; /* Опускаем текст "Вход" ближе к Username */
+    left: 0; /* Смещаем текст для выравнивания с Username */
+    margin-top: 8px; /* Точный отступ сверху */
+}
+
+.login-title {
+    color: #333333;
+    font-size: 2rem;
+    margin: 0;
+    margin-bottom: 0.5em;
+    text-align: left;
+    position: relative;
+    top: 5px; /* Опускаем текст "Вход" ближе к Username */
+    left: 0; /* Смещаем текст для выравнивания с Username */
+    margin-top: 8px; /* Точный отступ сверху */
+}
+
+.alertcontent {
+    position: fixed; /* Фиксированное положение */
+    top: 50%; /* Центрируем по вертикали */
+    left: 50%; /* Центрируем по горизонтали */
+    transform: translate(-50%, -50%); /* Сдвигаем на половину ширины и высоты */
+    z-index: 1000; /* Чтобы сообщение было поверх других элементов */
+    width: 90%; /* Ширина сообщения */
+    max-width: 600px; /* Максимальная ширина сообщения */
+    margin: 0; /* Убираем отступы */
+}
+
+.alert-container {
+    opacity: 0; /* Начальная прозрачность */
+    transition: opacity 0.5s ease, transform 0.5s ease; /* Плавный переход для изменения прозрачности и смещения */
+    background-color: rgba(74, 74, 74, 0.9); /* Коричневый фон с прозрачностью */
+    color: #ffffff; /* Белый цвет текста для контраста */
+ /* Цвет текста */
+    padding: 1em 1.5em; /* Паддинг вокруг текста */
+    border-radius: 8px; /* Закругление углов */
+    text-align: center; /* Центрирование текста */
+    font-size: 1rem; /* Размер шрифта */
+    font-weight: 500; /* Жирность шрифта */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Тень для эффекта */
+    transform: translateY(-20px); /* Поднимаем сообщение вверх для эффекта появления */
+}
+
+/* Класс для появления */
+.show {
+    opacity: 1; /* Полная непрозрачность */
+    transform: translateY(0); /* Сброс смещения при появлении */
+}
+
+
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0; /* Начальная прозрачность */
+        transform: translateY(-10px); /* Начальная позиция */
+    }
+    to {
+        opacity: 1; /* Конечная прозрачность */
+        transform: translateY(0); /* Конечное положение */
+    }
+}
+
+
+
+.alert-container::before {
+    content: "⚠️"; /* Можно использовать Unicode символ или вставить иконку */
+    font-size: 1.5rem;
+}
+
+/* Стили для текста внутри уведомления */
+
+
+.alert-list {
+    list-style: none; /* Уберите стандартные маркеры списка */
+    padding: 0;
+    margin: 0; /* Убедитесь, что отступы отсутствуют */
+}
+
+/* Анимация появления сверху */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Обратный порядок для страницы login.html */
+.login-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.alert-container {
+    order: -1; /* Переносим контейнер с сообщением выше формы */
+    width: 100%;
+    max-width: 600px;
+}
+
+.alert-item {
+    padding: 0.3em 0;
+}
+
+/* Стили для формы */
+.input-group {
+    position: relative;
+    margin-bottom: 1.5em;
+    text-align: left;
+}
+
+.form-label {
+    color: #555555; /* Цвет метки формы */
+    font-size: 0.9rem;
+    margin-bottom: 0.3em;
+    display: block;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.8em;
+    border-radius: 5px;
+    border: 1px solid #cccccc; /* Цвет границы */
+    background-color: #f9f9f9; /* Цвет фона для поля ввода */
+    color: #333333; /* Цвет текста */
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border: 1px solid #28a745; /* Зеленый цвет при фокусе */
+    box-shadow: 0 0 8px rgba(40, 167, 69, 0.5); /* Зеленая подсветка */
+    background-color: #ffffff; /* Цвет фона при фокусе */
+}
+
+.error-message {
+    color: #dc3545; /* Цвет ошибок */
+    font-size: 0.8rem;
+    margin-top: 0.2em;
+}
+
+/* Стиль для чекбокса */
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    font-size: 0.9rem;
+    color: #555555; /* Цвет текста чекбокса */
+    margin-bottom: 1.5em;
+}
+
+/* Общий стиль для чекбокса */
+.checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: #28a745; /* Зеленый цвет */
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* Анимация при отметке чекбокса */
+.checkbox:checked {
+    box-shadow: 0 0 8px rgba(40, 167, 69, 0.5); /* Подсветка при отметке */
+    transform: scale(1.1); /* Легкое увеличение при отметке */
+}
+
+/* Анимация при снятии отметки */
+.checkbox:checked::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 18px;
+    height: 18px;
+    background-color: rgba(40, 167, 69, 0.2); /* Легкая заливка */
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    animation: rippleEffect 0.6s ease; /* Эффект «всплеска» */
+}
+
+/* Анимация всплеска */
+@keyframes rippleEffect {
+    from {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 1;
+    }
+    to {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* Кнопка Войти */
+.btn {
+    width: 100%;
+    padding: 0.8em;
+    border-radius: 5px;
+    border: none;
+    background-color: #4a4a4a; /* Темный цвет кнопки */
+    color: #ffffff; /* Цвет текста кнопки */
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.3s, transform 0.2s ease, box-shadow 0.3s;
+    margin-bottom: 0.5em;
+}
+
+.btn:hover {
+    background-color: #383838; /* Цвет кнопки при наведении */
+}
+
+.register-link {
+    color: #4a4a4a; /* Цвет ссылки */
+    font-size: 1rem;
+    text-align: center;
+    margin-top: 1em;
+}
+
+.register-link span {
+    display: block;
+}
+
+.register-link a {
+    color: #4a4a4a; /* Цвет ссылки */
+    font-weight: bold;
+    transition: color 0.3s ease;
+    display: block;
+    text-decoration: none;
+}
+
+.register-link a:hover {
+    color: #28a745; /* Цвет ссылки при наведении */
+}
+
+/* Эффект всплеска для кнопки */
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    background: rgba(255, 255, 255, 0.6);
+    animation: ripple-animation 0.6s linear;
+}
+
+@keyframes ripple-animation {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+/* Футер */
+.footer {
+    display: flex; /* Используем flexbox для центрирования содержимого */
+    align-items: center;
+    justify-content: center; /* Центрируем содержимое по горизонтали */
+    background-color: #4a4a4a; /* Цвет фона футера */
+    color: #ffffff; /* Цвет текста футера */
+    padding-top: 25px;
+}
+
+
+
+.user-menu {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.user-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+.username {
+    color: #ffffff;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #4a4a4a; /* Темная тема */
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    min-width: 160px;
+}
+
+.dropdown-menu a {
+    color: #ffffff;
+    text-decoration: none;
+    display: block;
+    padding: 5px 0;
+    font-size: 0.9rem;
+}
+
+.dropdown-menu a:hover {
+    color: #66a5d9;
+    text-decoration: underline;
+}
+
+/* Показать меню при наведении */
+.user-menu:hover .dropdown-menu {
+    display: block;
+}
+
+
+.intro-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 90vh;
+    text-align: center;
+    overflow: hidden;
+}
+
+/* Базовые стили для intro-text и intro-bear */
+.intro-text {
+    animation: fadeIn 1.5s ease-out forwards;
+}
+
+.intro-bear {
+    animation: fadeIn 2s ease-out forwards;
+}
+
+/* Настройки для экрана 2560 x 1302 */
+@media screen and (min-width: 2560px) and (min-height: 1302px) {
+    .intro-text img {
+        width: 100%; /* Настройка ширины для большого экрана */
+    }
+    .intro-bear img {
+        width: 80%; /* Настройка размера медведя */
+    }
+}
+
+/* Настройки для экрана 1470 x 718.5 */
+@media screen and (max-width: 1470px) and (max-height: 718.5px) {
+    .intro-text img {
+        width: 75%; /* Увеличенная ширина для меньшего экрана */
+    }
+    .intro-bear img {
+        width: 65%; /* Увеличенный размер медведя */
+    }
+}
+
+
+/* Анимация появления */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Стиль кнопки входа */
+.intro-login-button {
+    padding: 0.8em 1.5em;
+    background-color: #4a4a4a; /* Основной цвет для кнопки */
+    color: #ffffff;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    animation: fadeIn 2.5s ease-out forwards;
+}
+
+.intro-login-button:hover {
+    background-color: #333333; /* Цвет при наведении */
+    transform: scale(1.05);
+}
+
+/* Адаптивный дизайн для мелких экранов */
+@media (max-width: 768px) {
+    .intro-text {
+        font-size: 1.5rem;
+    }
+}

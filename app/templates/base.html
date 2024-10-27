@@ -1,33 +1,98 @@
 <!doctype html>
-<html>
-    <head>
-      {% if title %}
-      <title>{{ title }} - Mega-Tutorial</title>
-      {% else %}
-      <title>Welcome to Mega-Tutorial</title>
-      {% endif %}
-    </head>
-    <body>
-       <div>
-  MegaTutorial:
-  <a href="{{ url_for('index') }}">Home</a>
-  {% if current_user.is_anonymous %}
-  <a href="{{ url_for('login') }}">Login</a>
-  {% else %}
-  <a href="{{ url_for('user', username=current_user.username) }}">Profile</a>
-  <a href="{{ url_for('logout') }}">Logout</a>
-  {% endif %}
-</div>
-        <hr>
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <ul>
-                    {% for message in messages %}
-                        <li> {{ message }} </li>
-                    {% endfor %}
-                </ul>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link id="theme-style" rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    {% if title %}
+    <title>{{ title }} - ЛЮБИРАБОТАЙ</title>
+    {% else %}
+    <title>Welcome to Mega-Tutorial</title>
+    {% endif %}
+</head>
+<body>
+    <div class="wrapper"> <!-- Обертка для flexbox -->
+        <!-- Навигация -->
+   <header class="navbar">
+        <div class="container">
+            {% if request.endpoint == 'preindex' %}
+                <div class="logo">
+                    <img id="dynamic-logo" src="/static/img/logo.svg" alt="Logo">
+                </div>
+                <nav class="nav-links">
+                    {% if not current_user.is_authenticated %}
+                        <a href="{{ url_for('login') }}" class="intro-login-button">Войти</a>
+                    {% else %}
+                        <div class="user-menu">
+                            <a href="{{ url_for('user', username=current_user.username) }}" class="user-profile-link">
+                                <img src="{{ current_user.avatar(30) }}" alt="Avatar" class="user-avatar">
+                                <span class="username">{{ current_user.username }}</span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <p>{{ current_user.email }}</p>
+                                <a href="{{ url_for('index') }}">Продолжить работу</a>
+                                <a href="{{ url_for('edit_profile') }}">Настройки профиля</a>
+                                <a href="#" class="toggle-theme-button">Переключить тему</a>
+                                <a href="{{ url_for('logout') }}">Выйти</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </nav>
+            {% else %}
+                <h1 class="site-title">ЛЮБИРАБОТАЙ</h1>
+                <nav class="nav-links">
+                    <a href="{{ url_for('index') }}">Home</a>
+                    <a href="#" class="toggle-theme-button">Переключить тему</a>
+                    {% if current_user.is_authenticated %}
+                        <div class="user-menu">
+                            <a href="{{ url_for('user', username=current_user.username) }}" class="user-profile-link">
+                                <img src="{{ current_user.avatar(30) }}" alt="Avatar" class="user-avatar">
+                                <span class="username">{{ current_user.username }}</span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <p>{{ current_user.email }}</p>
+                                <a href="{{ url_for('edit_profile') }}">Настройки профиля</a>
+                                <a href="#" class="toggle-theme-button">Переключить тему</a>
+                                <a href="{{ url_for('logout') }}">Выйти</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </nav>
             {% endif %}
-        {% endwith %}
-        {% block content %}{% endblock %}
-    </body>
+        </div>
+    </header>
+
+        <div class="alertcontent">
+            <!-- Отображение всплывающих сообщений -->
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert-container" id="alert-container">
+                    <ul class="alert-list">
+                        {% for message in messages %}
+                            <li class="alert-item">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            {% endwith %}
+        </div>
+        <!-- Основное содержимое страницы -->
+        <main class="content">
+            <!-- Блок для контента страницы -->
+            {% block content %}{% endblock %}
+        </main>
+
+        {% if not is_login %} <!-- Футер -->
+            <footer class="footer">
+                <div class="logo-container">
+                    <img id="footer-logo" src="{{ url_for('static', filename='img/logo.svg') }}" alt="Footer logo" class="logo">
+                </div>
+            </footer>
+        {% endif %}
+    </div>
+
+    <!-- Подключение скриптов -->
+    <script src="{{ url_for('static', filename='js/theme-toggle.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
 </html>

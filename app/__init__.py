@@ -9,12 +9,19 @@ from logging.handlers import SMTPHandler, RotatingFileHandler
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
+# Инициализация основных компонентов приложения
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
-from app import routes, models, errors
 
+# Загрузчик пользователя для Flask-Login
+@login.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+# Настройки логирования
 if not app.debug:
     if app.config['MAIL_SERVER']:
         auth = None
@@ -31,17 +38,19 @@ if not app.debug:
         mail_handler.setLevel(logging.ERROR)
         app.logger.addHandler(mail_handler)
 
-    if not os.path.exists('logs'):
-        os.mkdir('logs')
-    file_handler = RotatingFileHandler('logs/microblog.log', maxBytes=10240,
-                                       backupCount=10)
-    file_handler.setFormatter(logging.Formatter(
-        '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
-    file_handler.setLevel(logging.INFO)
-    app.logger.addHandler(file_handler)
+    if not any(isinstance(handler, RotatingFileHandler) for handler in app.logger.handlers):
+        if not os.path.exists('logs'):
+            os.mkdir('logs')
+        file_handler = RotatingFileHandler('logs/microblog.log', maxBytes=100000,
+                                           backupCount=10)
+        file_handler.setFormatter(logging.Formatter(
+            '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+        file_handler.setLevel(logging.INFO)
+        app.logger.addHandler(file_handler)
 
     app.logger.setLevel(logging.INFO)
     app.logger.info('Microblog startup')
 
+# Импортируем модули в конце, чтобы избежать циклических импортов
 from app import routes, models, errors
-
+from app.models import User  # Импорт модели User

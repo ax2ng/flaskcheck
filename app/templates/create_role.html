@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>Создать роль</h2>
+    <form method="POST" action="{{ url_for('create_role') }}">
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+            {{ form.name.label }}<br>
+            {{ form.name(size=32, class="form-control") }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Создать роль</button>
+    </form>
+{% endblock %}

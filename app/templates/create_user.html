@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>Создать пользователя</h2>
+    <form method="POST" action="{{ url_for('create_user') }}">
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+            {{ form.username.label }}<br>
+            {{ form.username(size=32, class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.email.label }}<br>
+            {{ form.email(size=32, class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.first_name.label }}<br>
+            {{ form.first_name(size=32, class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.last_name.label }}<br>
+            {{ form.last_name(size=32, class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.middle_name.label }}<br>
+            {{ form.middle_name(size=32, class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.phone_number.label }}<br>
+            {{ form.phone_number(size=32, class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.date_birth.label }}<br>
+            {{ form.date_birth(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.about_me.label }}<br>
+            {{ form.about_me(rows=4, class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.avatar.label }}<br>
+            {{ form.avatar(size=32, class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.is_active.label }}<br>
+            {{ form.is_active(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.password.label }}<br>
+            {{ form.password(size=32, class="form-control") }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Создать пользователя</button>
+    </form>
+{% endblock %}

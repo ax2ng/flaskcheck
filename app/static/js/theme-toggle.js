@@ -2,7 +2,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const themeStyle = document.getElementById('theme-style');
     const dynamicLogo = document.getElementById('dynamic-logo');
     const footerLogo = document.getElementById('footer-logo');
+    const headerLogo = document.getElementById('header-logo');
+    const arrow = document.getElementById('arrow');
+    const switchh = document.getElementById('switchh');
     let currentTheme = localStorage.getItem('theme') || getDefaultTheme();
+
+
 
     // Применяем начальную тему
     applyTheme(currentTheme);
@@ -32,5 +37,28 @@ document.addEventListener('DOMContentLoaded', function () {
         if (footerLogo) {
             footerLogo.src = theme === 'dark' ? "/static/img/logo.svg" : "/static/img/logowhite.svg";
         }
+        if (headerLogo) {
+            headerLogo.src = theme === 'dark' ? "/static/img/logo.svg" : "/static/img/logofooter.svg";
+        }
+        if (arrow) {
+            arrow.src = theme === 'dark' ? "/static/img/arrow.svg" : "/static/img/arrowwhite.svg";
+        }
+        if (switchh) {
+            switchh.src = theme === 'dark' ? "/static/img/switch.svg" : "/static/img/switchwhite.svg";
+        }
     }
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const toggleThemeButton = document.getElementById('toggle-theme-button');
+
+    toggleThemeButton.addEventListener('click', function () {
+        toggleThemeButton.classList.add('rotate');
+
+        // Удаление класса после завершения анимации
+        toggleThemeButton.addEventListener('animationend', function () {
+            toggleThemeButton.classList.remove('rotate');
+        }, { once: true }); // { once: true } гарантирует, что обработчик удалится после первого выполнения
+    });
 });

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="admin-roles">
+    <h2>Админ панель - Роли</h2>
+    <a href="{{ url_for('create_role') }}" class="admin-button-create">Создать роль</a>
+    <table class="admin-table">
+        <tr>
+            <th>Название роли</th>
+            <th>Действия</th>
+        </tr>
+        {% for role in roles %}
+        <tr>
+            <td>{{ role.name }}</td>
+            <td>
+                <a href="{{ url_for('edit_role', role_id=role.id) }}" class="admin-button-edit">Редактировать</a>
+                <form action="{{ url_for('delete_role', role_id=role.id) }}" method="post" style="display:inline;">
+                    <button type="submit" class="admin-button-delete" onclick="return confirm('Вы уверены?');">Удалить</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

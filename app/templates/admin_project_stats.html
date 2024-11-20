@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="admin-panel">
+    <h2>Админ панель - Статистика проектов</h2>
+    <a href="{{ url_for('create_project_stat') }}" class="admin-button-create">Добавить статистику</a>
+    <table class="admin-table">
+        <tr>
+            <th>ID Проекта</th>
+            <th>Задачи всего</th>
+            <th>Завершенные задачи</th>
+            <th>Среднее время завершения</th>
+            <th>Действия</th>
+        </tr>
+        {% for stat in project_stats %}
+        <tr>
+            <td>{{ stat.project_id }}</td>
+            <td>{{ stat.tasks_total }}</td>
+            <td>{{ stat.tasks_completed }}</td>
+            <td>{{ stat.average_completion_time or 'N/A' }}</td>
+            <td>
+                <a href="{{ url_for('edit_project_stat', stat_id=stat.id) }}" class="admin-button-edit">Редактировать</a>
+                <form action="{{ url_for('delete_project_stat', stat_id=stat.id) }}" method="post" style="display:inline;">
+                    <button type="submit" class="admin-button-delete" onclick="return confirm('Вы уверены?');">Удалить</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

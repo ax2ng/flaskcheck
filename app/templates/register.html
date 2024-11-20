@@ -2,6 +2,9 @@
 
 {% block content %}
 <div class="login-container">
+     <a href="#" class="toggle-theme-button" id="toggle-theme-button">
+     <img src="{{ url_for('static', filename='img/switchtheme.svg') }}" alt="Toggle Theme">
+</a>
     <div class="login-form">
         <div class="logo-container">
             <img id="dynamic-logo" src="{{ url_for('static', filename='img/logo.svg') }}" alt="Logo" class="logo">
@@ -45,8 +48,9 @@
 
             <button type="submit" class="btn">Зарегистрироваться</button>
         </form>
-
+        <span>При нажатии на кнопку "Зарегистрироваться" вы подтверждатате согласие на обработку персональных данных в соответствии с <a href="#">Условиями</a></span>
         <p class="register-link">
+
             <span>Уже есть аккаунт?</span>
             <a href="{{ url_for('login') }}">Войдите здесь</a>
         </p>

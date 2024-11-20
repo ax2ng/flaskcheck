@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
+
 <div class="login-container">
+
+     <a href="#" class="toggle-theme-button" id="toggle-theme-button">
+    <img src="{{ url_for('static', filename='img/switchtheme.svg') }}" alt="Toggle Theme">
+</a>
     <div class="login-form">
         <!-- Логотип -->
         <div class="logo-container">

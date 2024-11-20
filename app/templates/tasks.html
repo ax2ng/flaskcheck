@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row" id="columns-container">
+
+    <!-- Столбец "Не начато" -->
+    <div class="col-md-4 not-started" id="not-started">
+        <div class="column-header" draggable="true" ondragstart="dragColumn(event)">
+            <h3 contenteditable="true" spellcheck="false"
+                onfocus="fixCursorPosition(event)"
+                oninput="saveColumnName('not-started')">Не начато</h3>
+        </div>
+        <div class="tasks-container">
+            {% for task in tasks if task.status.name == 'Not Started' %}
+            <div class="task card mb-3 not-started"
+                 data-task-id="{{ task.id }}"
+                 draggable="true"
+                 ondragstart="dragTask(event)">
+                <div class="card-body">
+                    <h5 class="card-title">{{ task.title }}</h5>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Столбец "В процессе выполнения" -->
+    <div class="col-md-4 in-progress" id="in-progress">
+        <div class="column-header" draggable="true" ondragstart="dragColumn(event)">
+            <h3 contenteditable="true" spellcheck="false"
+                onfocus="fixCursorPosition(event)"
+                oninput="saveColumnName('in-progress')">В процессе выполнения</h3>
+        </div>
+        <div class="tasks-container">
+            {% for task in tasks if task.status.name == 'In Progress' %}
+            <div class="task card mb-3 in-progress"
+                 data-task-id="{{ task.id }}"
+                 draggable="true"
+                 ondragstart="dragTask(event)">
+                <div class="card-body">
+                    <h5 class="card-title">{{ task.title }}</h5>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Столбец "Выполнено" -->
+    <div class="col-md-4 completed" id="completed">
+        <div class="column-header" draggable="true" ondragstart="dragColumn(event)">
+            <h3 contenteditable="true" spellcheck="false"
+                onfocus="fixCursorPosition(event)"
+                oninput="saveColumnName('completed')">Выполнено</h3>
+        </div>
+        <div class="tasks-container">
+            {% for task in tasks if task.status.name == 'Completed' %}
+            <div class="task card mb-3 completed"
+                 data-task-id="{{ task.id }}"
+                 draggable="true"
+                 ondragstart="dragTask(event)">
+                <div class="card-body">
+                    <h5 class="card-title">{{ task.title }}</h5>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}

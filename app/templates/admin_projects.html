@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="admin-panell">
+    <h2>Админ панель - Проекты</h2>
+   <table class="admin-table">
+    <tr>
+        <th>Название</th>
+        <th>Действия</th>
+    </tr>
+       <a href="{{ url_for('create_project') }}" class="admin-button-create">Создать проект</a>
+    {% for project in projects %}
+    <tr>
+        <td>
+            <a href="{{ url_for('project_detail', project_id=project.id) }}" class="project-link">{{ project.title }}</a>
+        </td>
+        <td>
+            <a href="{{ url_for('edit_project', project_id=project.id) }}" class="admin-button-edit">Редактировать</a>
+            <form action="{{ url_for('delete_project', project_id=project.id) }}" method="post" style="display:inline;">
+                <button type="submit" class="admin-button-delete" onclick="return confirm('Вы уверены?');">Удалить</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+</div>
+{% endblock %}

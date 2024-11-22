@@ -2,27 +2,79 @@
 {% block content %}
 <div class="admin-panell">
     <h2>Админ панель - Проекты</h2>
-   <table class="admin-table">
-    <tr>
-        <th>Название</th>
-        <th>Действия</th>
-    </tr>
-       <a href="{{ url_for('create_project') }}" class="admin-button-create">Создать проект</a>
-    {% for project in projects %}
-    <tr>
-        <td>
-            <a href="{{ url_for('project_detail', project_id=project.id) }}" class="project-link">{{ project.title }}</a>
-        </td>
-        <td>
-            <a href="{{ url_for('edit_project', project_id=project.id) }}" class="admin-button-edit">Редактировать</a>
-            <form action="{{ url_for('delete_project', project_id=project.id) }}" method="post" style="display:inline;">
-                <button type="submit" class="admin-button-delete" onclick="return confirm('Вы уверены?');">Удалить</button>
-            </form>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
+    <a href="{{ url_for('create_project') }}" class="admin-button-create">Создать проект</a>
 
+    <!-- Форма для множественного удаления -->
+    <form id="bulk-delete-form" action="{{ url_for('delete_project') }}" method="post">
+        <table class="admin-table">
+            <tr>
+                <th><input type="checkbox" id="select-all"/></th>
+                <th>Название</th>
+                <th>Действия</th>
+            </tr>
+            {% for project in projects %}
+            <tr>
+                <td>
+                    <input type="checkbox" name="project_ids" value="{{ project.id }}" class="select-project-checkbox"/>
+                </td>
+                <td>
+                    <a href="{{ url_for('project_detail', project_id=project.id) }}" class="project-link">{{
+                        project.title }}</a>
+                </td>
+                <td>
+                    <a href="{{ url_for('edit_project', project_id=project.id) }}" class="admin-button-edit">Редактировать</a>
+                    <form action="{{ url_for('delete_project') }}" method="post" style="display:inline;">
+                        <input type="hidden" name="project_id" value="{{ project.id }}"/>
+                        <button type="submit" class="admin-button-delete" onclick="return confirm('Вы уверены?');">
+                            Удалить
+                        </button>
+                    </form>
 
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <!-- Кнопка "Удалить выбранные" -->
+        <button type="submit" id="bulk-delete-button" class="admin-button-delete inactive">
+            Удалить выбранные
+        </button>
+    </form>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const selectAllCheckbox = document.getElementById('select-all');
+        const projectCheckboxes = document.querySelectorAll('.select-project-checkbox');
+        const bulkDeleteButton = document.getElementById('bulk-delete-button');
+
+        // Обновление состояния кнопки "Удалить выбранные"
+        function updateButtonState() {
+            const anyChecked = Array.from(projectCheckboxes).some(checkbox => checkbox.checked);
+            if (anyChecked) {
+                bulkDeleteButton.classList.remove('inactive');
+            } else {
+                bulkDeleteButton.classList.add('inactive');
+            }
+        }
+
+        // Обработчик для "Выбрать все"
+        selectAllCheckbox.addEventListener('change', () => {
+            projectCheckboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+            updateButtonState();
+        });
+
+        // Обработчик для индивидуальных чекбоксов
+        projectCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                updateButtonState();
+                if (!checkbox.checked) {
+                    selectAllCheckbox.checked = false; // Снимаем "Выбрать все", если хотя бы один чекбокс снят
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}

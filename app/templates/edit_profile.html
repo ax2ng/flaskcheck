@@ -2,21 +2,37 @@
 
 {% block content %}
 <div class="edit-profile-container">
-    <div class="edit-profile-header">
-        <span>Редактирование профиля</span>
-    </div>
+    <h1 class="h111">Редактирование профиля</h1>
     <form action="" method="post" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
 
-        <div class="form-group">
-            <img src="{{ user.avatar(128) }}" alt="Текущая аватарка" class="current-avatar">
+        <div class="form-group avatar-container">
+            <div class="avatar-wrapper">
+                <!-- Аватар пользователя -->
+                <img src="{{ user.avatar(128) }}" alt="Avatar" class="current-avatar">
+
+                <!-- Кнопка изменения аватарки -->
+                <label for="avatar" class="change-avatar-button">
+                    <i class="fas fa-camera"></i>
+                    {{ form.avatar(class="hidden-input") }}
+                </label>
+            </div>
         </div>
 
         <div class="form-group">
-            <label for="Имя пользователя">Имя пользователя</label>
+            <!-- Чекбокс для переключения на Gravatar -->
+            <label>
+                {{ form.use_gravatar }}
+                Использовать Gravatar вместо загруженной аватарки
+            </label>
+        </div>
+
+
+        <div class="form-group">
+            <label for="username">Имя пользователя</label>
             {{ form.username(size=32) }}
             {% for error in form.username.errors %}
-                <span class="error-message">[{{ error }}]</span>
+            <span class="error-message">[{{ error }}]</span>
             {% endfor %}
         </div>
 
@@ -24,22 +40,11 @@
             <label for="about_me">О себе</label>
             {{ form.about_me(cols=50, rows=4) }}
             {% for error in form.about_me.errors %}
-                <span class="error-message">[{{ error }}]</span>
+            <span class="error-message">[{{ error }}]</span>
             {% endfor %}
         </div>
 
-        <div class="form-group">
-            <label for="avatar">Загрузить аватар</label>
-            {{ form.avatar }}
-            {% for error in form.avatar.errors %}
-                <span class="error-message">[{{ error }}]</span>
-            {% endfor %}
-        </div>
-
-        <div class="form-group">
-            <input type="submit" value="Сохранить изменения" class="submit-button">
-        </div>
+        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
     </form>
 </div>
-
 {% endblock %}

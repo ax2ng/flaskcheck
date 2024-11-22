@@ -74,31 +74,54 @@ def register():
     return render_template('register.html', title='Регистрация', form=form, is_login=True)
 
 
+UPLOAD_FOLDER = os.path.join(app.static_folder, 'uploads')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
-    form = EditProfileForm(current_user.username)
+    form = EditProfileForm(original_username=current_user.username)
     if form.validate_on_submit():
+        # Проверка уникальности имени пользователя
+        if form.username.data != current_user.username:
+            user = User.query.filter_by(username=form.username.data).first()
+            if user:
+                flash('Имя пользователя уже занято.', 'danger')
+                return render_template('edit_profile.html', form=form)
+
         current_user.username = form.username.data
         current_user.about_me = form.about_me.data
 
-        # Обработка загрузки аватара
+        # Обработка загрузки аватарки
         if form.avatar.data:
             avatar_file = form.avatar.data
-            filename = secure_filename(avatar_file.filename)
-            filepath = os.path.join('static/uploads/avatars', filename)
-            avatar_file.save(filepath)
+            filename = secure_filename(f"{current_user.id}_{avatar_file.filename}")
+            upload_folder = 'app/static/uploads/avatars'
+            os.makedirs(upload_folder, exist_ok=True)
+            filepath = os.path.join(upload_folder, filename)
 
-            # Сохраняем путь к аватарке
-            current_user.avatar_url = url_for('static', filename=f'uploads/avatars/{filename}')
+            try:
+                avatar_file.save(filepath)
+                current_user.avatar_url = f"static/uploads/avatars/{filename}"  # Убедитесь, что путь правильный
+            except Exception as e:
+                flash(f'Ошибка при сохранении аватара: {e}', 'danger')
+
+        # Обработка переключения на Gravatar
+        if form.use_gravatar.data:
+            current_user.avatar_url = None  # Сбрасываем пользовательскую аватарку
 
         db.session.commit()
-        flash('Изменения были успешно сохранены!')
-        return redirect(url_for('edit_profile'))
+        flash('Изменения сохранены!', 'success')
+        return redirect(url_for('user', username=current_user.username))
+
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
-    return render_template('edit_profile.html', title='Редактирование профиля', form=form)
+        form.use_gravatar.data = current_user.avatar_url is None  # Если аватарка не установлена, включить чекбокс
+
+    return render_template('edit_profile.html', form=form, user=current_user)
+
 
 
 # Выход из аккаунта
@@ -385,20 +408,41 @@ def edit_project(project_id):
     return render_template('edit_project.html', form=form, project=project)
 
 
-# Удаление проекта
-@app.route('/delete_project/<int:project_id>', methods=['POST'])
+@app.route('/delete_project', methods=['POST'])
 @login_required
-def delete_project(project_id):
-    project = Project.query.get_or_404(project_id)
+def delete_project():
+    # Проверяем, передан ли список проектов для удаления (множественное удаление)
+    project_ids = request.form.getlist('project_ids')  # Получаем список ID из формы
 
-    # Удаление связанных задач
-    for task in project.tasks:
-        db.session.delete(task)
+    if project_ids:
+        # Удаляем каждый проект по ID
+        for project_id in project_ids:
+            project = Project.query.get(project_id)
+            if project:
+                # Удаляем связанные задачи
+                for task in project.tasks:
+                    db.session.delete(task)
+                db.session.delete(project)
 
-    db.session.delete(project)
-    db.session.commit()
-    flash("Проект и связанные задачи успешно удалены.")
+        db.session.commit()
+        flash("Выбранные проекты и связанные задачи успешно удалены.", "success")
+    else:
+        # Обрабатываем одиночное удаление, если список пуст (один project_id)
+        project_id = request.form.get('project_id')
+        if project_id:
+            project = Project.query.get_or_404(project_id)
+            # Удаление связанных задач
+            for task in project.tasks:
+                db.session.delete(task)
+
+            db.session.delete(project)
+            db.session.commit()
+            flash("Проект и связанные задачи успешно удалены.", "success")
+        else:
+            flash("Не выбрано ни одного проекта для удаления.", "error")
+
     return redirect(url_for('admin_projects'))
+
 
 
 # Роут для отображения всех задач в админке
@@ -449,15 +493,30 @@ def edit_task(task_id):
     return render_template('edit_task.html', form=form, task=task)
 
 
-# Роут для удаления задачи в админке
-@app.route('/admin/delete_task/<int:task_id>', methods=['POST'])
+@app.route('/admin/delete_task', methods=['POST'])
 @login_required
-def delete_task(task_id):
-    task = Task.query.get_or_404(task_id)
-    db.session.delete(task)
-    db.session.commit()
-    flash("Задача успешно удалена.")
+def delete_task():
+    task_ids = request.form.getlist('task_ids')  # Для множественного удаления
+    task_id = request.form.get('task_id')  # Для одиночного удаления
+
+    if task_ids:  # Множественное удаление
+        for task_id in task_ids:
+            task = Task.query.get(task_id)
+            if task:
+                db.session.delete(task)
+        db.session.commit()
+        flash("Выбранные задачи успешно удалены.", "success")
+    elif task_id:  # Одиночное удаление
+        task = Task.query.get_or_404(task_id)
+        db.session.delete(task)
+        db.session.commit()
+        flash("Задача успешно удалена.", "success")
+    else:  # Если данные не переданы
+        flash("Не выбрано ни одной задачи для удаления.", "error")
+
     return redirect(url_for('admin_tasks'))
+
+
 
 
 # Создание нового пользователя
@@ -523,23 +582,30 @@ def edit_user(user_id):
     return render_template('edit_user.html', form=form, user=user)
 
 
-# Удаление пользователя
-@app.route('/admin/delete_user/<int:user_id>', methods=['POST'])
+@app.route('/admin/delete_users', methods=['POST'])
 @login_required
-def delete_user(user_id):
-    user_to_delete = User.query.get_or_404(user_id)
+def delete_users():
+    user_ids = request.form.getlist('user_ids')  # Для множественного удаления
+    user_id = request.form.get('user_id')  # Для одиночного удаления
 
-    # Проверка: если текущий пользователь - администратор и он пытается удалить себя
-    if current_user.id == user_to_delete.id and user_to_delete.has_role('admin'):
-        flash("Вы не можете удалить себя, так как необходимо оставить хотя бы одного администратора.", "error")
-        return redirect(url_for('admin_users'))
+    if user_ids:  # Множественное удаление
+        for user_id in user_ids:
+            user = User.query.get(user_id)
+            if user:
+                db.session.delete(user)
+        db.session.commit()
+        flash("Выбранные пользователи успешно удалены.", "success")
+    elif user_id:  # Одиночное удаление
+        user = User.query.get_or_404(user_id)
+        db.session.delete(user)
+        db.session.commit()
+        flash("Пользователь успешно удалён.", "success")
+    else:  # Если данные не переданы
+        flash("Не выбрано ни одного пользователя для удаления.", "error")
 
-    # Удаляем пользователя (с проектами)
-    db.session.delete(user_to_delete)
-    db.session.commit()
-
-    flash("Пользователь успешно удален!")
     return redirect(url_for('admin_users'))
+
+
 
 
 
@@ -579,15 +645,30 @@ def edit_role(role_id):
     return render_template('edit_role.html', form=form, role=role)
 
 
-# Удаление роли
-@app.route('/admin/delete_role/<int:role_id>', methods=['POST'])
+@app.route('/admin/delete_roles', methods=['POST'])
 @login_required
-def delete_role(role_id):
-    role = Role.query.get_or_404(role_id)
-    db.session.delete(role)
-    db.session.commit()
-    flash("Роль успешно удалена.")
+def delete_role():
+    role_ids = request.form.getlist('role_ids')  # Для множественного удаления
+    role_id = request.form.get('role_id')  # Для одиночного удаления
+
+    if role_ids:  # Если выбран хотя бы один чекбокс
+        for role_id in role_ids:
+            role = Role.query.get(role_id)
+            if role:
+                db.session.delete(role)
+        db.session.commit()
+        flash("Выбранные роли успешно удалены.", "success")
+    elif role_id:  # Если удаляется одна роль
+        role = Role.query.get_or_404(role_id)
+        db.session.delete(role)
+        db.session.commit()
+        flash("Роль успешно удалена.", "success")
+    else:
+        flash("Не выбрано ни одной роли для удаления.", "error")
+
     return redirect(url_for('admin_roles'))
+
+
 
 
 from datetime import datetime, timezone
@@ -637,15 +718,29 @@ def edit_project_stat(stat_id):
     return render_template('edit_project_stat.html', form=form, project_stat=project_stat)
 
 
-# Удаление записи статистики проекта
-@app.route('/admin/delete_project_stat/<int:stat_id>', methods=['POST'])
+@app.route('/admin/delete_project_stats', methods=['POST'])
 @login_required
-def delete_project_stat(stat_id):
-    project_stat = ProjectStatistics.query.get_or_404(stat_id)
-    db.session.delete(project_stat)
-    db.session.commit()
-    flash("Статистика проекта успешно удалена.")
+def delete_project_stat():
+    stat_ids = request.form.getlist('stat_ids')  # Для множественного удаления
+    stat_id = request.form.get('stat_id')  # Для одиночного удаления
+
+    if stat_ids:  # Множественное удаление
+        for stat_id in stat_ids:
+            project_stat = ProjectStatistics.query.get(stat_id)
+            if project_stat:
+                db.session.delete(project_stat)
+        db.session.commit()
+        flash("Выбранные записи статистики успешно удалены.", "success")
+    elif stat_id:  # Одиночное удаление
+        project_stat = ProjectStatistics.query.get_or_404(stat_id)
+        db.session.delete(project_stat)
+        db.session.commit()
+        flash("Запись статистики успешно удалена.", "success")
+    else:  # Если данные не переданы
+        flash("Не выбрано ни одной записи для удаления.", "error")
+
     return redirect(url_for('admin_project_stats'))
+
 
 
 

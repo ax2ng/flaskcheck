@@ -263,3 +263,5 @@ sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) attempt to write a r
 2024-11-14 16:09:40,515 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
 2024-11-14 16:14:30,393 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
 2024-11-14 16:16:28,040 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-11-20 22:33:07,936 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-11-22 10:50:09,567 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]

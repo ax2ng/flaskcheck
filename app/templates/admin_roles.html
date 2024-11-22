@@ -3,22 +3,72 @@
 <div class="admin-roles">
     <h2>Админ панель - Роли</h2>
     <a href="{{ url_for('create_role') }}" class="admin-button-create">Создать роль</a>
-    <table class="admin-table">
-        <tr>
-            <th>Название роли</th>
-            <th>Действия</th>
-        </tr>
-        {% for role in roles %}
-        <tr>
-            <td>{{ role.name }}</td>
-            <td>
-                <a href="{{ url_for('edit_role', role_id=role.id) }}" class="admin-button-edit">Редактировать</a>
-                <form action="{{ url_for('delete_role', role_id=role.id) }}" method="post" style="display:inline;">
-                    <button type="submit" class="admin-button-delete" onclick="return confirm('Вы уверены?');">Удалить</button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
+
+    <!-- Форма для множественного удаления -->
+    <form id="bulk-delete-form" action="{{ url_for('delete_role') }}" method="post">
+        <table class="admin-table">
+            <tr>
+                <th><input type="checkbox" id="select-all" /></th>
+                <th>Название роли</th>
+                <th>Действия</th>
+            </tr>
+            {% for role in roles %}
+            <tr>
+                <td>
+                    <input type="checkbox" name="role_ids" value="{{ role.id }}" class="select-role-checkbox" />
+                </td>
+                <td>{{ role.name }}</td>
+                <td>
+                    <a href="{{ url_for('edit_role', role_id=role.id) }}" class="admin-button-edit">Редактировать</a>
+                    <form action="{{ url_for('delete_role') }}" method="post" style="display:inline;">
+                        <input type="hidden" name="role_id" value="{{ role.id }}">
+                        <button type="submit" class="admin-button-delete" onclick="return confirm('Вы уверены?');">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <!-- Кнопка "Удалить выбранные" -->
+        <button type="submit" id="bulk-delete-button" class="admin-button-delete inactive">
+            Удалить выбранные
+        </button>
+    </form>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const selectAllCheckbox = document.getElementById('select-all');
+        const roleCheckboxes = document.querySelectorAll('.select-role-checkbox');
+        const bulkDeleteButton = document.getElementById('bulk-delete-button');
+
+        // Обновление состояния кнопки "Удалить выбранные"
+        function updateButtonState() {
+            const anyChecked = Array.from(roleCheckboxes).some(checkbox => checkbox.checked);
+            if (anyChecked) {
+                bulkDeleteButton.classList.remove('inactive');
+            } else {
+                bulkDeleteButton.classList.add('inactive');
+            }
+        }
+
+        // Обработчик для "Выбрать все"
+        selectAllCheckbox.addEventListener('change', () => {
+            roleCheckboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+            updateButtonState();
+        });
+
+        // Обработчик для индивидуальных чекбоксов
+        roleCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                updateButtonState();
+                if (!checkbox.checked) {
+                    selectAllCheckbox.checked = false; // Снимаем "Выбрать все", если хотя бы один чекбокс снят
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}

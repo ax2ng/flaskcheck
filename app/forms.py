@@ -40,10 +40,11 @@ class RegistrationForm(FlaskForm):
 
 
 class EditProfileForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    about_me = TextAreaField('About me', validators=[Length(min=0, max=140)])
-    avatar = FileField('Upload Avatar', validators=[FileAllowed(['jpg', 'png'], 'Только изображения!')])
-    submit = SubmitField('Submit')
+    username = StringField('Имя пользователя', validators=[DataRequired()])
+    about_me = TextAreaField('О себе', validators=[Length(min=0, max=140)])
+    avatar = FileField('Загрузить аватар', validators=[FileAllowed(['jpg', 'png'], 'Только изображения!')])
+    use_gravatar = BooleanField('Использовать Gravatar вместо загруженной аватарки')
+    submit = SubmitField('Сохранить изменения')
 
     def __init__(self, original_username, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -3,18 +3,21 @@
 {% block content %}
 <div class="profile-container">
     <div class="profile-header">
-        <img src="{{ user.avatar(128) }}" alt="Avatar" class="profile-avatar">
+        <div class="form-group avatar-container">
+            <img src="{{ user.avatar(128) }}" alt="Avatar" class="current-avatar">
+        </div>
+
         <div>
             <h1>Пользователь: <br> {{ user.username }}</h1>
 
             {% if user.about_me %}
-                <p class="user-about">{{ user.about_me }}</p>
+            <p class="user-about">{{ user.about_me }}</p>
             {% endif %}
             {% if user.last_seen %}
-                <p class="last-seen">Был в сети: {{ user.last_seen.strftime('%d.%m.%Y %H:%M:%S') }}</p>
+            <p class="last-seen">Был в сети: {{ user.last_seen.strftime('%d.%m.%Y %H:%M:%S') }}</p>
             {% endif %}
             {% if user == current_user %}
-                <p><a class="edit-profile" href="{{ url_for('edit_profile') }}">Редактировать профиль</a></p>
+            <p><a class="edit-profile" href="{{ url_for('edit_profile') }}">Редактировать профиль</a></p>
             {% endif %}
         </div>
     </div>

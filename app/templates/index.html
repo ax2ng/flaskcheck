@@ -8,10 +8,10 @@
         <p class="panel-description">Добро пожаловать!</p>
         <div class="panel-links">
             <a href="{{ url_for('admin_projects') }}" class="admin-button btn-projects">Управление проектами</a>
-            <a href="{{ url_for('admin_tasks') }}" class="admin-button btn-tasks">Управление задачами</a>
+            <a href="{{ url_for('admin_tasks') }}" class="admin-button btn-projects">Управление задачами</a>
             <a href="{{ url_for('admin_users') }}" class="admin-button btn-users">Управление пользователями</a>
-            <a href="{{ url_for('admin_roles') }}" class="admin-button btn-roles">Управление ролями</a>
-            <a href="{{ url_for('admin_project_stats') }}" class="admin-button btn-project-statistics">Статистика проектов</a>
+            <a href="{{ url_for('admin_roles') }}" class="admin-button btn-projects">Управление ролями</a>
+            <a href="{{ url_for('admin_project_stats') }}" class="admin-button btn-projects">Статистика проектов</a>
         </div>
 
         <!-- Кнопка для создания бэкапа -->
@@ -28,10 +28,19 @@
         <!-- Загрузка бэкапа -->
         <div class="upload-section">
             <h3 class="upload-title">Загрузить бэкап</h3>
-            <form action="{{ url_for('upload_backup') }}" method="post" enctype="multipart/form-data" class="upload-form">
-                <input type="file" name="file" class="upload-input" required />
-                <input type="submit" value="Загрузить" class="upload-button" />
+            <form action="{{ url_for('upload_backup') }}" method="post" enctype="multipart/form-data"
+                  class="upload-form">
+                <div class="file-upload-container">
+                    <label for="file" class="file-upload-label">
+                        <i class="fas fa-upload"></i> Выберите файл
+                    </label>
+                    <input type="file" id="file" name="file" class="file-upload-input" required/>
+                </div>
+                <button type="submit" class="upload-button">
+                    <i class="fas fa-cloud-upload-alt"></i> Загрузить
+                </button>
             </form>
+
         </div>
     </div>
 
@@ -50,13 +59,13 @@
             <h3>Рабочее пространство</h3>
             <p>Это главная панель с используемыми функциями</p>
         </div>
-         <a href="{{ url_for('tasks') }}" style="text-decoration: none;">
-             <div class="card">
-            <img src="{{ url_for('static', filename='img/todo.svg') }}" alt="Задачи">
-            <h3>Задачи</h3>
-            <p style="text-decoration: none;">Всегда держите свои задачи перед глазами</p>
-        </div>
-         </a>
+        <a href="{{ url_for('tasks') }}" style="text-decoration: none;">
+            <div class="card">
+                <img src="{{ url_for('static', filename='img/todo.svg') }}" alt="Задачи">
+                <h3>Задачи</h3>
+                <p style="text-decoration: none;">Всегда держите свои задачи перед глазами</p>
+            </div>
+        </a>
         <div class="card">
             <img src="{{ url_for('static', filename='img/files.svg') }}" alt="Документы">
             <h3>Документы</h3>

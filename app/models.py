@@ -47,7 +47,7 @@ class User(UserMixin, db.Model):
 
     def avatar(self, size: int = 128) -> str:
         if self.avatar_url:
-            return f"{self.avatar_url}?s={size}"
+            return f"/{self.avatar_url}?s={size}"
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         return f'https://www.gravatar.com/avatar/{digest}?d=monsterid&s={size}'
 

@@ -2,6 +2,7 @@ import os
 import shutil
 import sqlite3
 import subprocess
+import threading
 from datetime import datetime, timezone
 from flask import render_template, flash, url_for, request, redirect, send_file, session, jsonify
 from flask_login import current_user, login_user, logout_user, login_required
@@ -293,7 +294,20 @@ def create_task(project_id):
 #     flash('Неверный формат файла. Пожалуйста, загрузите файл .sql.', 'error')
 #     return redirect(url_for('index'))
 
-db_path = app.config['SQLALCHEMY_DATABASE_URI'].replace('sqlite:///', '')
+
+def execute_command(command):
+    try:
+        result = subprocess.run(
+            command, shell=True, check=True, capture_output=True, text=True, timeout=60
+        )
+        print(f"Command output: {result.stdout}")
+        return result.stdout
+    except subprocess.CalledProcessError as e:
+        print(f"Command failed: {e.stderr}")
+        raise
+    except Exception as e:
+        print(f"Unexpected error: {str(e)}")
+        raise
 
 @app.route('/admin/backup', methods=['GET'])
 def backup_database():
@@ -301,49 +315,53 @@ def backup_database():
         flash('У вас нет доступа к этой функции', 'error')
         return redirect(url_for('index'))
 
-    # Create backup directories for .db and .sql files
     backup_dir = os.path.join(os.getcwd(), "backups")
-    backup_sql_dir = os.path.join(backup_dir, "sql")
     os.makedirs(backup_dir, exist_ok=True)
-    os.makedirs(backup_sql_dir, exist_ok=True)
 
-    # Set backup filenames
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    backup_db_filename = f"backup_{timestamp}.db"
-    backup_sql_filename = f"backup_{timestamp}.sql"
-    backup_db_path = os.path.join(backup_dir, backup_db_filename)
-    backup_sql_path = os.path.join(backup_sql_dir, backup_sql_filename)
+    backup_filename = f"backup_{timestamp}.sql"
+    backup_path = os.path.join(backup_dir, backup_filename)
 
     try:
-        # Copy the .db file
-        shutil.copyfile(db_path, backup_db_path)
+        db_url = app.config['SQLALCHEMY_DATABASE_URI']
+        with open(backup_path, 'w') as f:
+            f.write("DROP SCHEMA public CASCADE;\nCREATE SCHEMA public;\n")
 
-        # Generate SQL dump
-        conn = sqlite3.connect(db_path)
-        with open(backup_sql_path, 'w') as f:
-            for line in conn.iterdump():
-                f.write(f"{line}\n")
-        conn.close()
-
-        session['backup_file'] = backup_db_filename
+        # Создание бэкапа
+        subprocess.run(
+            ['pg_dump', f'--dbname={db_url}'],
+            stdout=open(backup_path, 'a'),
+            stderr=subprocess.PIPE,
+            check=True,
+            text=True
+        )
+        session['backup_file'] = backup_filename
         flash('Бэкап успешно создан. Вы можете его скачать.', 'success')
-    except IOError as e:
-        flash(f'Ошибка при создании бэкапа: {str(e)}', 'error')
+    except subprocess.CalledProcessError as e:
+        flash(f'Ошибка при создании бэкапа: {e.stderr}', 'error')
+    except Exception as e:
+        flash(f'Ошибка: {str(e)}', 'error')
 
     return redirect(url_for('index'))
 
-# Загрузка файла бэкапа
-@app.route('/admin/download_backup', methods=['GET'])
-def download_backup():
-    backup_filename = session.pop('backup_file', None)
-    if not backup_filename:
-        flash('Файл бэкапа не найден', 'error')
-        return redirect(url_for('index'))
 
-    backup_path = os.path.join(os.getcwd(), "backups", backup_filename)
-    return send_file(backup_path, as_attachment=True)
+def reset_schema_and_restore(backup_path, db_url):
+    try:
+        print("Starting schema reset...")
+        # Очистка схемы базы данных
+        clear_schema_cmd = f'psql --dbname={db_url} -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"'
+        execute_command(clear_schema_cmd)
+        print("Schema reset complete.")
 
-# Восстановление базы данных из файла бэкапа
+        print("Restoring from backup...")
+        # Восстановление базы данных из дампа
+        restore_cmd = f'psql --dbname={db_url} --file={backup_path}'
+        execute_command(restore_cmd)
+        print("Restore completed successfully.")
+    except Exception as e:
+        print(f"Error during restore: {e}")
+
+
 @app.route('/admin/upload_backup', methods=['POST'])
 def upload_backup():
     if not current_user.has_role('admin'):
@@ -363,21 +381,39 @@ def upload_backup():
         filename = secure_filename(file.filename)
         backup_path = os.path.join(os.getcwd(), "backups", filename)
         file.save(backup_path)
+        print(f"Backup file saved at {backup_path}")
 
-        # Замена существующей базы данных на загруженный файл
-        try:
-            shutil.copyfile(backup_path, db_path)
-            flash('База данных успешно обновлена.', 'success')
-        except IOError as e:
-            flash(f'Ошибка при восстановлении базы данных: {str(e)}', 'error')
+        db_url = app.config['SQLALCHEMY_DATABASE_URI']
 
+        # Запускаем процесс восстановления в фоновом потоке
+        thread = threading.Thread(target=reset_schema_and_restore, args=(backup_path, db_url))
+        thread.start()
+
+        flash('Восстановление запущено. Пожалуйста, подождите.', 'success')
         return redirect(url_for('index'))
 
-    flash('Неверный формат файла. Пожалуйста, загрузите файл .db.', 'error')
+    flash('Неверный формат файла. Пожалуйста, загрузите файл .sql.', 'error')
     return redirect(url_for('index'))
 
+
 def allowed_file(filename):
-    ALLOWED_EXTENSIONS = {'db'}
+    ALLOWED_EXTENSIONS = {'sql'}
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@app.route('/admin/download_backup', methods=['GET'])
+def download_backup():
+    backup_filename = session.pop('backup_file', None)
+    if not backup_filename:
+        flash('Файл бэкапа не найден', 'error')
+        return redirect(url_for('index'))
+
+    backup_path = os.path.join(os.getcwd(), "backups", backup_filename)
+    return send_file(backup_path, as_attachment=True)
+
+
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = {'sql'}
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 

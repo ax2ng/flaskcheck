@@ -28,24 +28,22 @@
         <!-- Загрузка бэкапа -->
         <div class="upload-section">
             <h3 class="upload-title">Загрузить бэкап</h3>
-            <form action="{{ url_for('upload_backup') }}" method="post" enctype="multipart/form-data"
-                  class="upload-form">
+            <form action="{{ url_for('upload_backup') }}" method="post" enctype="multipart/form-data" class="upload-form">
                 <div class="file-upload-container">
-                    <label for="file" class="file-upload-label">
+                    <label for="file-upload" class="file-upload-label">
                         <i class="fas fa-upload"></i> Выберите файл
                     </label>
-                    <input type="file" id="file" name="file" class="file-upload-input" required/>
+                    <input type="file" id="file-upload" name="file" class="file-upload-input" required/>
+                    <span id="file-name" class="file-name">Файл не выбран</span>
                 </div>
                 <button type="submit" class="upload-button">
                     <i class="fas fa-cloud-upload-alt"></i> Загрузить
                 </button>
             </form>
-
         </div>
     </div>
 
     {% else %}
-
     <!-- Блок для неавторизованных пользователей -->
     <div class="intro-screen">
         <div class="intro-text">
@@ -87,7 +85,23 @@
             <p>Видео-уроки и реальные кейсы для адаптации новичков</p>
         </div>
     </div>
-
     {% endif %}
 </section>
+
+<script>
+    // Обработчик для отображения имени выбранного файла
+    document.addEventListener("DOMContentLoaded", () => {
+        const fileInput = document.getElementById("file-upload");
+        const fileName = document.getElementById("file-name");
+
+        fileInput.addEventListener("change", () => {
+            // Проверяем, выбран ли файл
+            if (fileInput.files.length > 0) {
+                fileName.textContent = fileInput.files[0].name; // Устанавливаем имя файла
+            } else {
+                fileName.textContent = "Файл не выбран"; // Сбрасываем текст
+            }
+        });
+    });
+</script>
 {% endblock %}

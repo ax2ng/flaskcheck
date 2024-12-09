@@ -2,68 +2,29 @@
 
 {% block content %}
 <section class="admin-dashboard">
-    {% if current_user.is_authenticated and current_user.has_role('admin') %}
-    <div class="admin-panel">
-        <h1 class="panel-title">АДМИН-ПАНЕЛЬ</h1>
-        <p class="panel-description">Добро пожаловать!</p>
-        <div class="panel-links">
-            <a href="{{ url_for('admin_projects') }}" class="admin-button btn-projects">Управление проектами</a>
-            <a href="{{ url_for('admin_tasks') }}" class="admin-button btn-projects">Управление задачами</a>
-            <a href="{{ url_for('admin_users') }}" class="admin-button btn-users">Управление пользователями</a>
-            <a href="{{ url_for('admin_roles') }}" class="admin-button btn-projects">Управление ролями</a>
-            <a href="{{ url_for('admin_project_stats') }}" class="admin-button btn-projects">Статистика проектов</a>
-        </div>
-
-        <!-- Кнопка для создания бэкапа -->
-        <div class="backup-section">
-            <a href="{{ url_for('backup_database') }}" class="backup-button">Создать бэкап данных</a>
-        </div>
-
-        {% if session.get('backup_file') %}
-        <div class="backup-download-section">
-            <a href="{{ url_for('download_backup') }}" class="backup-download-button">Скачать бэкап</a>
-        </div>
-        {% endif %}
-
-        <!-- Загрузка бэкапа -->
-        <div class="upload-section">
-            <h3 class="upload-title">Загрузить бэкап</h3>
-            <form action="{{ url_for('upload_backup') }}" method="post" enctype="multipart/form-data" class="upload-form">
-                <div class="file-upload-container">
-                    <label for="file-upload" class="file-upload-label">
-                        <i class="fas fa-upload"></i> Выберите файл
-                    </label>
-                    <input type="file" id="file-upload" name="file" class="file-upload-input" required/>
-                    <span id="file-name" class="file-name">Файл не выбран</span>
-                </div>
-                <button type="submit" class="upload-button">
-                    <i class="fas fa-cloud-upload-alt"></i> Загрузить
-                </button>
-            </form>
-        </div>
-    </div>
-
-    {% else %}
     <!-- Блок для неавторизованных пользователей -->
     <div class="intro-screen">
         <div class="intro-text">
             <img id="switchh" src="{{ url_for('static', filename='img/switch.svg') }}" alt="Полюби Работать">
         </div>
     </div>
-
     <div class="card-container">
         <div class="card">
-            <img src="{{ url_for('static', filename='img/workspace.svg') }}" alt="Рабочее пространство">
-            <h3>Рабочее пространство</h3>
-            <p>Это главная панель с используемыми функциями</p>
+            <a href="{{ url_for('projects') }}" style="text-decoration: none;">
+
+                <img src="{{ url_for('static', filename='img/workspace.svg') }}" alt="Рабочее пространство">
+                <h3>Рабочее пространство</h3>
+                <p>Это главная панель с используемыми функциями</p>
+            </a>
         </div>
-        <a href="{{ url_for('tasks') }}" style="text-decoration: none;">
-            <div class="card">
+
+        <div class="card">
+            <a href="{{ url_for('tasks') }}" style="text-decoration: none;">
                 <img src="{{ url_for('static', filename='img/todo.svg') }}" alt="Задачи">
                 <h3>Задачи</h3>
                 <p style="text-decoration: none;">Всегда держите свои задачи перед глазами</p>
-            </div>
-        </a>
+            </a>
+        </div>
         <div class="card">
             <img src="{{ url_for('static', filename='img/files.svg') }}" alt="Документы">
             <h3>Документы</h3>
@@ -85,23 +46,5 @@
             <p>Видео-уроки и реальные кейсы для адаптации новичков</p>
         </div>
     </div>
-    {% endif %}
 </section>
-
-<script>
-    // Обработчик для отображения имени выбранного файла
-    document.addEventListener("DOMContentLoaded", () => {
-        const fileInput = document.getElementById("file-upload");
-        const fileName = document.getElementById("file-name");
-
-        fileInput.addEventListener("change", () => {
-            // Проверяем, выбран ли файл
-            if (fileInput.files.length > 0) {
-                fileName.textContent = fileInput.files[0].name; // Устанавливаем имя файла
-            } else {
-                fileName.textContent = "Файл не выбран"; // Сбрасываем текст
-            }
-        });
-    });
-</script>
 {% endblock %}

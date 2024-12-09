@@ -2,49 +2,112 @@
 
 {% block content %}
 <div class="edit-profile-container">
-    <h1 class="h111">Редактирование профиля</h1>
+    <h1 class="edit-profile-header">Редактирование профиля</h1>
+
     <form action="" method="post" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
 
-        <div class="form-group avatar-container">
+        <!-- Аватарка и чекбоксы -->
+        <div class="avatar-section">
             <div class="avatar-wrapper">
-                <!-- Аватар пользователя -->
                 <img src="{{ user.avatar(128) }}" alt="Avatar" class="current-avatar">
-
-                <!-- Кнопка изменения аватарки -->
                 <label for="avatar" class="change-avatar-button">
-                    <i class="fas fa-camera"></i>
+                    <i class="fas fa-camera"></i> Изменить аватар
                     {{ form.avatar(class="hidden-input") }}
+                </label>
+                {% if form.avatar.errors %}
+                <ul class="error-messages">
+                    {% for error in form.avatar.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            <div class="checkbox-group">
+                <label class="checkbox-label">
+                    {{ form.use_gravatar }} Использовать Gravatar
+                </label>
+                <label class="checkbox-label">
+                    {{ form.notify_birthday }} Уведомлять о днях рождения
                 </label>
             </div>
         </div>
 
-        <div class="form-group">
-            <!-- Чекбокс для переключения на Gravatar -->
-            <label>
-                {{ form.use_gravatar }}
-                Использовать Gravatar вместо загруженной аватарки
-            </label>
+        <!-- Поля формы -->
+        <div class="form-grid">
+            <div class="form-column">
+                <div class="form-group">
+                    <label for="first_name">Имя</label>
+                    {{ form.first_name(class="form-control") }}
+                    {% if form.first_name.errors %}
+                    <ul class="error-messages">
+                        {% for error in form.first_name.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Фамилия</label>
+                    {{ form.last_name(class="form-control") }}
+                    {% if form.last_name.errors %}
+                    <ul class="error-messages">
+                        {% for error in form.last_name.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="phone_number">Номер телефона</label>
+                    {{ form.phone_number(class="form-control") }}
+                    {% if form.phone_number.errors %}
+                    <ul class="error-messages">
+                        {% for error in form.phone_number.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form-column">
+                <div class="form-group">
+                    <label for="date_birth">Дата рождения</label>
+                    {{ form.date_birth(class="form-control") }}
+                    {% if form.date_birth.errors %}
+                    <ul class="error-messages">
+                        {% for error in form.date_birth.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="username">Имя пользователя</label>
+                    {{ form.username(class="form-control") }}
+                    {% if form.username.errors %}
+                    <ul class="error-messages">
+                        {% for error in form.username.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="about_me">О себе</label>
+                    {{ form.about_me(class="form-control") }}
+                    {% if form.about_me.errors %}
+                    <ul class="error-messages">
+                        {% for error in form.about_me.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+            </div>
         </div>
 
-
-        <div class="form-group">
-            <label for="username">Имя пользователя</label>
-            {{ form.username(size=32) }}
-            {% for error in form.username.errors %}
-            <span class="error-message">[{{ error }}]</span>
-            {% endfor %}
-        </div>
-
-        <div class="form-group">
-            <label for="about_me">О себе</label>
-            {{ form.about_me(cols=50, rows=4) }}
-            {% for error in form.about_me.errors %}
-            <span class="error-message">[{{ error }}]</span>
-            {% endfor %}
-        </div>
-
-        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+        <button type="submit" class="submit-button">Сохранить изменения</button>
     </form>
 </div>
 {% endblock %}

@@ -1,54 +1,76 @@
 {% extends "base.html" %}
 {% block content %}
-    <h2>Создать пользователя</h2>
-    <form method="POST" action="{{ url_for('create_user') }}">
+
+<div class="create-user-container">
+    <h2 class="edit-profile-header">Создать пользователя</h2>
+
+    <form method="POST" action="{{ url_for('create_user') }}" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
 
-        <div class="form-group">
-            {{ form.username.label }}<br>
-            {{ form.username(size=32, class="form-control") }}
-        </div>
-        <div class="form-group">
-            {{ form.email.label }}<br>
-            {{ form.email(size=32, class="form-control") }}
-        </div>
-        <div class="form-group">
-            {{ form.first_name.label }}<br>
-            {{ form.first_name(size=32, class="form-control") }}
-        </div>
-        <div class="form-group">
-            {{ form.last_name.label }}<br>
-            {{ form.last_name(size=32, class="form-control") }}
-        </div>
-        <div class="form-group">
-            {{ form.middle_name.label }}<br>
-            {{ form.middle_name(size=32, class="form-control") }}
-        </div>
-        <div class="form-group">
-            {{ form.phone_number.label }}<br>
-            {{ form.phone_number(size=32, class="form-control") }}
-        </div>
-        <div class="form-group">
-            {{ form.date_birth.label }}<br>
-            {{ form.date_birth(class="form-control") }}
-        </div>
-        <div class="form-group">
-            {{ form.about_me.label }}<br>
-            {{ form.about_me(rows=4, class="form-control") }}
-        </div>
-        <div class="form-group">
-            {{ form.avatar.label }}<br>
-            {{ form.avatar(size=32, class="form-control") }}
-        </div>
-        <div class="form-group">
-            {{ form.is_active.label }}<br>
-            {{ form.is_active(class="form-control") }}
-        </div>
-        <div class="form-group">
-            {{ form.password.label }}<br>
-            {{ form.password(size=32, class="form-control") }}
+        <!-- Сетка формы -->
+        <div class="form-grid">
+            <!-- Колонка 1 -->
+            <div class="form-column">
+                <div class="form-group">
+                    <label for="username" class="labell">Имя пользователя</label>
+                    {{ form.username(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    <label for="roles" class="labell">Роли</label>
+                    {{ form.roles(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    <label for="email" class="labell">Электронная почта</label>
+                    {{ form.email(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    <label for="first_name" class="labell">Имя</label>
+                    {{ form.first_name(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    <label for="last_name" class="labell">Фамилия</label>
+                    {{ form.last_name(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    <label for="middle_name" class="labell">Отчество</label>
+                    {{ form.middle_name(class="form-control") }}
+                </div>
+            </div>
+
+            <!-- Колонка 2 -->
+            <div class="form-column">
+                <div class="form-group">
+                    <label for="phone_number" class="labell">Номер телефона</label>
+                    {{ form.phone_number(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    <label for="date_birth" class="labell">Дата рождения</label>
+                    {{ form.date_birth(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    <label for="about_me" class="labell">О себе</label>
+                    {{ form.about_me(class="form-control", rows=4) }}
+                </div>
+                <div class="form-group">
+                    <label for="avatar" class="labell">Аватар</label>
+                    {{ form.avatar(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    <label for="is_active" class="labell">Активен</label>
+                    {{ form.is_active(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    <label for="password" class="labell">Пароль</label>
+                    {{ form.password(class="form-control") }}
+                </div>
+            </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">Создать пользователя</button>
+        <!-- Кнопка отправки -->
+        <div class="form-actions">
+            <button type="submit" class="submit-button">Создать пользователя</button>
+        </div>
     </form>
+</div>
+
 {% endblock %}

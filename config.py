@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -14,7 +15,6 @@ class Config:
     MAIL_PASSWORD = 'mimgbmpdcqbuuimj'
     ADMINS = ['servet0chka@yandex.ru']
 
-
     SESSION_COOKIE_SAMESITE = "Lax"
     SESSION_COOKIE_SECURE = False
-
+    REMEMBER_COOKIE_DURATION = timedelta(days=7)  # Время действия cookie

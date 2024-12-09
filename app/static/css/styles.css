@@ -88,7 +88,7 @@ html, body {
 }
 
 .nav-links a {
-    margin-right: 223px;
+    margin-right: 200px;
     color: #ffffff;
     text-decoration: none;
 }
@@ -504,12 +504,12 @@ h2 {
 }
 
 /* Настройки для экрана 1470 x 718.5 */
-@media screen and (max-width: 1470px) and (max-height: 743px) {
+@media screen and (max-width: 1470px) and (max-height: 800px) {
     .intro-text img {
-        width: 75%; /* Увеличенная ширина для меньшего экрана */
+        width: 80%; /* Увеличенная ширина для меньшего экрана */
     }
     .intro-bear img {
-        width: 65%; /* Увеличенный размер медведя */
+        width: 70%; /* Увеличенный размер медведя */
     }
 }
 
@@ -556,7 +556,7 @@ h2 {
 
 /* Основной стиль для админ-панели */
 .admin-panell {
-    background-color: var(--background-color) !important;
+    background-color: #2E3B4E
     color: var(--text-color) !important;
     padding: 20px !important;
     border-radius: 8px !important;
@@ -772,12 +772,9 @@ h2 {
 
 /* Базовые стили админ-панели */
 .admin-dashboard {
+    padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 .admin-greeting {
@@ -796,11 +793,15 @@ h2 {
     width: 100%;
     max-width: 1000px;
     text-align: center;
+    min-width: 879px;
+    max-height: 540px;
+    margin-top: 35px;
 }
+
 
 /* Панель администратора */
 .admin-roles {
-    background-color: #233b4f;
+    background-color: #2E3B4E;
     padding: 25px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -814,32 +815,42 @@ h2 {
 }
 
 .panel-title {
-    font-size: 1.6em;
-    color: #ffffff;
+    font-size: 24px;
     margin-bottom: 10px;
+    text-align: center;
 }
 
+
 .panel-description {
-    font-size: 1em;
-    color: #b0c4de;
+    font-size: 16px;
     margin-bottom: 20px;
+    text-align: center;
+    color: #ffffff;
 }
 
 .panel-links {
-    display: flex;
-    justify-content: space-evenly;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
 }
 
 /* Кнопки админ-панели */
 .admin-button {
-    padding: 12px 20px;
-    border-radius: 8px;
-    font-size: 1em;
-    font-weight: bold;
-    color: #ffffff;
+    display: block;
+    padding: 10px 15px;
+    background-color: #447aaf;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
     text-decoration: none;
-    transition: transform 0.2s, background-color 0.3s;
-    margin: 7.5px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.admin-button:hover {
+    background-color: #365f8c;
 }
 
 .btn-projects {
@@ -990,6 +1001,34 @@ h2 {
 }
 
 
+.file-upload-label {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #447aaf;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.file-upload-label:hover {
+    background-color: #365f8c;
+}
+
+.file-upload-input {
+    display: none;
+}
+
+.file-name {
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+    text-align: center;
+}
+
 
 
 
@@ -1043,28 +1082,50 @@ h2 {
     background-color: #0056b3; /* Темнее при наведении */
 }
 
-/* Стиль для постов пользователя */
-.post {
-    background-color: #f9f9f9; /* Светлый фон для постов */
-    border-radius: 5px;
-    padding: 15px;
-    margin-bottom: 15px; /* Отступ между постами */
+
+
+
+
+.edit-profile-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background-color: #233b4f;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    margin-top: 7%;
+}
+
+.create-user-container {
+    max-width: 800px;
+    margin: auto;
+    padding-right: 50px;
+    padding-bottom: 20px;
+    padding-left: 50px;
+    background-color: #233b4f;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    margin-top: 4.7%;
 }
 
 
+@media (max-height: 900px) {
+    .edit-profile-container {
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+}
 
+.form-grid {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
 
-
-
-
-/* Стили для страницы редактирования профиля */
-.edit-profile-container {
-    background-color: #233b4f; /* Белый фон для формы */
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Мягкая тень */
-    padding: 20px;
-    max-width: 600px; /* Максимальная ширина формы */
-    margin: auto; /* Центрируем форму */
+.form-column {
+    flex: 1;
 }
 
 .edit-profile-header {
@@ -1081,9 +1142,18 @@ h2 {
 label {
     font-weight: bold; /* Жирный шрифт для меток */
     display: block; /* Блоковое отображение для меток */
-    margin-bottom: 5px; /* Отступ снизу */
+    margin-bottom: 5px;
     color: #ffffff;
 }
+
+.labell {
+    font-weight: bold; /* Жирный шрифт для меток */
+    margin-bottom: 0px; !important
+    display: block; /* Блоковое отображение для меток */
+    color: #ffffff;
+}
+
+
 
 input[type="text"], textarea {
     width: 100%; /* Полная ширина полей ввода */
@@ -1094,13 +1164,14 @@ input[type="text"], textarea {
 }
 
 .submit-button {
-    background-color: #007bff; /* Цвет кнопки */
-    color: white; /* Цвет текста кнопки */
-    padding: 10px 15px; /* Отступы внутри кнопки */
-    border: none; /* Без рамки */
-    border-radius: 5px; /* Закругленные углы кнопки */
-    cursor: pointer; /* Курсор при наведении на кнопку */
-    width: 100%; /* Полная ширина кнопки */
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 .submit-button:hover {
@@ -1293,7 +1364,52 @@ section.admin-dashboard {
 /* Стили для столбцов */
 .not-started .column-header {
     border-bottom: 3px solid #007bff; /* Синий */
+    /*transition: border-width 0.3s ease;*/
 }
+
+.column-header {
+    position: relative;
+    border-bottom: 3px solid #007bff; /* Синий */
+    /*transition: border-bottom 0.3s ease;*/
+}
+
+/* Расширение границы при наведении */
+/*.column-header:hover {
+    border-bottom-width: 6px;
+}*/
+
+/* Стиль для текстового поля
+.column-header .add-task-input {
+    position: absolute;
+    top: -40px; *//* Поле скрыто выше заголовка *//*
+    left: 0;
+    right: 0;
+    opacity: 0;
+    transform: translateY(10px); *//* Смещено вниз, чтобы сделать появление плавным *//*
+    padding: 5px;
+    border: 1px solid #007bff;
+    border-radius: 3px;
+    background-color: #ffffff;
+    font-size: 14px;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 1; *//* Поле поверх других элементов *//*
+}
+
+*//* Отображение текстового поля при наведении *//*
+.column-header:hover .add-task-input {
+    opacity: 1;
+    transform: translateY(0); *//* Возвращаем на место *//*
+}*/
+
+
+
+/*
+.not-started .column-header:hover {
+    border-bottom-width: 35px; */
+/* Увеличиваем ширину *//*
+
+}
+*/
 
 .in-progress .column-header {
     border-bottom: 3px solid #ffc107; /* Желтый */
@@ -1388,20 +1504,18 @@ h3[contenteditable="true"]:focus {
 
 .avatar-wrapper {
     position: relative;
-    width: 128px;
-    height: 128px;
+    width: 100px; /* Уменьшаем размер аватарки */
+    height: 100px; /* Уменьшаем размер аватарки */
     margin: 0 auto;
     border-radius: 50%;
     overflow: hidden;
 }
 
 .current-avatar {
-    width: 128px; /* Размер аватарки */
-    height: 128px; /* Размер аватарки */
-    object-fit: cover; /* Обрезает изображение, если пропорции не совпадают */
-    border-radius: 50%; /* Делает аватарку круглой */
-    border: 2px solid #ccc; /* Рамка */
-    display: block; /* Требуется для margin: auto */
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .form-group.avatar-container {
@@ -1416,12 +1530,12 @@ h3[contenteditable="true"]:focus {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 40px;
+    height: 30px; /* Уменьшена высота кнопки */
     background-color: rgba(0, 0, 0, 0.6);
     color: #fff;
-    font-size: 16px;
+    font-size: 14px; /* Уменьшен размер шрифта */
     text-align: center;
-    line-height: 40px;
+    line-height: 30px; /* Соответствует высоте кнопки */
     cursor: pointer;
     display: none;
 }
@@ -1437,4 +1551,836 @@ h3[contenteditable="true"]:focus {
 
 .h111 {
     margin-bottom: 15px;
+    font-size: 1.5rem; /* Уменьшение размера заголовка */
+    text-align: center; /* Центрирование заголовка */
 }
+
+/* Основной контейнер для проектов */
+/* Основной контейнер для проектов */
+.projects {
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 60px;
+    padding: 20px;
+    background-color: #233b4f;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Заголовок страницы */
+.projects__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #447aaf;
+}
+
+
+.projects__title {
+    font-size: 35px;
+    font-weight: bold;
+    color: #ffffff;
+    margin: 0;
+}
+
+.projects__actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.projects__icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.projects__icon-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.projects__icon-button img {
+    width: 24px;
+    height: 24px;
+    display: block;
+}
+
+/* Кнопка "Создать проект" */
+.projects__create-button {
+    background-color: #447aaf; /* Светло-голубой цвет для яркости */
+    color: #ffffff; /* Белый текст */
+    padding: 12px 20px; /* Увеличенный внутренний отступ для большего размера */
+    border: none; /* Убираем рамку */
+    border-radius: 8px; /* Более округлая форма */
+    font-size: 16px; /* Чуть крупнее текст */
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Мягкая тень */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    margin-bottom: 2px;
+}
+
+.projects__create-button:hover {
+    background-color: #45a6cf; /* Цвет при наведении */
+    transform: translateY(-2px); /* Лёгкое поднятие */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Усиление тени */
+}
+
+.projects__create-button:active {
+    background-color: #3791b1; /* Цвет при нажатии */
+    transform: translateY(0); /* Возврат в исходное положение */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Вернуть тень к исходной */
+}
+
+
+.projects__columns {
+    display: flex;
+    border-bottom: 2.5px solid #394a5a;
+    padding: 10px 0;
+    color: #b0c4de;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Выравнивание заголовков столбцов */
+.projects__column-header {
+    flex: 1;
+    text-align: center; /* Центрируем заголовки */
+    padding: 0 10px;
+}
+
+/* Первый столбец имеет удвоенную ширину */
+.projects__column-header:first-child {
+    flex: 2;
+}
+
+/* Список проектов */
+.projects__list {
+    width: 100%;
+    max-height: 400px; /* Установите нужную высоту */
+    overflow-y: auto; /* Добавляем вертикальную прокрутку */
+    overflow-x: hidden; /* Отключаем горизонтальную прокрутку */
+    padding-right: 10px; /* Отступ для комфортного просмотра */
+}
+
+.projects__list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.projects__list::-webkit-scrollbar-track {
+    background: #233b4f; /* Цвет фона полосы */
+}
+
+.projects__list::-webkit-scrollbar-thumb {
+    background-color: #447aaf; /* Цвет бегунка */
+    border-radius: 4px;
+    border: 2px solid #233b4f; /* Пространство между бегунком и краем */
+}
+
+.projects__list::-webkit-scrollbar-thumb:hover {
+    background-color: #376692; /* Цвет при наведении */
+}
+
+.projects__row {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #394a5a;
+    padding: 10px 0;
+    color: #ffffff;
+}
+
+.projects__column {
+    flex: 1; /* Равномерное распределение ширины */
+    display: flex; /* Используем flexbox */
+    align-items: center; /* Центрируем содержимое по вертикали */
+    justify-content: center; /* Центрируем содержимое по горизонтали */
+    text-align: center; /* Текст по центру */
+    padding: 10px; /* Отступы для аккуратности */
+    overflow: hidden; /* Предотвращаем выход контента за пределы */
+    white-space: nowrap; /* Запрещаем перенос текста */
+    text-overflow: ellipsis; /* Добавляем многоточие для длинного текста */
+}
+
+
+/* Увеличиваем ширину для первой колонки */
+.projects__column.projects__column--name {
+    flex: 2;
+    text-align: left; /* Для имени проекта текст остается слева */
+}
+
+/* Специальное правило для первой колонки (название проекта) */
+.projects__column--name {
+    flex: 2; /* Увеличенная ширина для названий проектов */
+    justify-content: flex-start; /* Выравнивание по левому краю */
+    text-align: left; /* Текст выравнивается слева */
+}
+
+
+.project__name-container {
+    display: flex;
+    align-items: center; /* Центровка элементов по вертикали */
+    gap: 10px; /* Расстояние между иконкой и названием проекта */
+}
+
+/* Иконка проекта */
+.project__icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+}
+
+.project__icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* Контейнер с названием проекта и задачами */
+.project__title-container {
+    display: flex;
+    flex-direction: column; /* Название и задачи располагаются вертикально */
+}
+
+.project__title-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.project__title-link:hover {
+    text-decoration: underline;
+}
+
+/* Список задач под проектом */
+.project__tasks {
+    list-style: none;
+    padding: 0;
+    margin-top: 5px 0 0 0;
+    font-size: 14px;
+    color: #b0c4de;
+}
+
+.project__tasks a {
+    color: #b0c4de;
+    text-decoration: none;
+}
+
+.project__tasks a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* Аватарки пользователей */
+.projects__column--manager img,
+.projects__column--responsible img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.projects__column--manager {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    position: relative;
+    gap: 10px;
+}
+
+.projects__column--manager:hover::after {
+    content: attr(title); /* Показываем полный текст из атрибута title */
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 5px;
+    border-radius: 4px;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    z-index: 10;
+    font-size: 12px;
+}
+
+
+.projects__column--responsible {
+    flex: 1; /* Ширина равная остальным колонкам */
+    display: flex;
+    align-items: center; /* Центрируем содержимое по вертикали */
+    justify-content: center; /* Центрируем содержимое по горизонтали */
+    gap: 10px; /* Расстояние между аватаркой и текстом */
+    overflow: hidden; /* Ограничиваем длинный текст */
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.projects__column--responsible:hover::after {
+    content: attr(title); /* Показываем полный текст из атрибута title */
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 5px;
+    border-radius: 4px;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    z-index: 10;
+    font-size: 12px;
+}
+
+/* Дедлайн */
+.projects__column--deadline {
+    font-size: 14px;
+    color: #ff9f43;
+}
+
+/* Статус */
+/* Стили для статусов */
+/* Общий стиль бейджиков */
+.projects__column--status {
+    color: #b0c4de; /* Единый цвет текста */
+    font-weight: bold; /* Подчёркиваем текст */
+    padding: 4px 10px; /* Пространство вокруг текста */
+    border: 1px solid transparent; /* Базовая рамка */
+    border-radius: 12px; /* Закругляем края для бейджика */
+    background-color: #2a3b4d; /* Нейтральный фон */
+    display: inline-block; /* Обеспечиваем компактное отображение */
+    font-size: 14px; /* Оптимальный размер текста */
+    line-height: 1.2; /* Поддерживаем читабельность */
+    text-align: center;
+}
+
+/* Бейджик для статуса "Не начато" */
+.projects__column--status.не-начато {
+    border-color: #007bff; /* Синий ободок */
+    background-color: rgba(0, 123, 255, 0.1); /* Светло-синий фон */
+}
+
+/* Бейджик для статуса "В процессе" */
+.projects__column--status.в-процессе {
+    border-color: #ffc107; /* Жёлтый ободок */
+    background-color: rgba(255, 193, 7, 0.1); /* Светло-жёлтый фон */
+}
+
+/* Бейджик для статуса "Выполнено" */
+.projects__column--status.выполнено {
+    border-color: #28a745; /* Зелёный ободок */
+    background-color: rgba(40, 167, 69, 0.1); /* Светло-зелёный фон */
+}
+
+/* Бейджик для неизвестного статуса */
+.projects__column--status.default {
+    border-color: #6c757d; /* Серый ободок */
+    background-color: rgba(108, 117, 125, 0.1); /* Светло-серый фон */
+}
+
+
+
+
+/* Приоритет */
+/* Базовый стиль для приоритетов */
+/* Базовый стиль для приоритетов */
+/* Базовый стиль для приоритетов */
+.priority {
+    font-size: 14px;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px; /* Отступ между текстом и значком */
+}
+
+/* Низкий приоритет */
+.priority-low {
+    color: #8fa3b5; /* Серо-голубой */
+}
+
+.priority-low::after {
+    content: "▼"; /* Эстетичная стрелка вниз */
+    font-size: 12px;
+    color: #a8bacb; /* Немного светлее основного цвета */
+}
+
+/* Средний приоритет */
+.priority-medium {
+    color: #b9a2d8; /* Лавандовый */
+}
+
+.priority-medium::after {
+    content: "⏸"; /* Иконка двух полос (пауз) */
+    font-size: 12px;
+    color: #d0b9e3; /* Чуть светлее основного цвета */
+}
+
+/* Высокий приоритет */
+.priority-high {
+    color: #9baf8f; /* Оливковый */
+}
+
+.priority-high::after {
+    content: "▲▲"; /* Эстетичные стрелки вверх */
+    font-size: 12px;
+    color: #b3c5a7; /* Чуть светлее основного цвета */
+}
+
+/* Приоритет не задан */
+.priority-default {
+    color: #c2c2c2; /* Нейтральный светло-серый */
+}
+
+
+
+
+/* Адаптивные стили */
+@media (max-width: 768px) {
+    .projects__columns {
+        flex-wrap: wrap;
+        font-size: 12px;
+    }
+
+    .projects__row {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .projects__column {
+        flex: 1 1 100%;
+    }
+
+    .projects__column--name {
+        flex: 1 1 100%;
+    }
+}
+
+.projects__title-container {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Отступ между заголовком и фильтрами */
+    flex-grow: 1; /* Занимает оставшееся пространство */
+}
+.projects__filters {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Отступ между поиском и сортировкой */
+}
+
+.projects__search-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.projects__search-input {
+    height: 30px;
+    padding: 0 10px;
+    border: 1px solid #b0c4de;
+    border-radius: 4px;
+    background-color: #1e2a38; /* Цвет поля поиска */
+    color: #ffffff;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.projects__search-input:focus {
+    border-color: #447aaf;
+    outline: none;
+}
+
+.projects__sort-select {
+    height: 30px;
+    padding: 0 10px;
+    border: 1px solid #b0c4de;
+    border-radius: 4px;
+    background-color: #1e2a38; /* Цвет поля сортировки */
+    color: #ffffff;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.projects__sort-select:focus {
+    border-color: #447aaf;
+    outline: none;
+}
+
+.projects__actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Основной контейнер */
+.project-detail-container {
+    display: flex;
+    gap: 20px; /* Расстояние между левым и правым блоком */
+}
+
+/* Основной блок (слева) */
+.project-detail {
+    flex: 3;
+    padding: 20px;
+    background-color: #233b4f;
+    color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.project-detail__header {
+    display: flex;
+    align-items: center; /* Выровнять элементы по центру */
+    justify-content: space-between; /* Разделить иконку, заголовок и прогресс */
+    margin-bottom: 20px;
+}
+
+.project-detail__title {
+    flex: 1; /* Заголовок занимает всё оставшееся пространство */
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffffff;
+    margin: 0; /* Убираем отступы */
+    outline: none;
+    border: none;
+}
+
+
+.project-detail__title.placeholder {
+    color: #6c757d; /* Серый текст для плейсхолдера */
+}
+
+.project-detail__title:focus {
+    outline: 2px solid #447aaf; /* Голубая рамка */
+}
+
+/* Прогресс задач */
+.project-detail__progress {
+    display: flex;
+    flex-direction: column; /* Вертикальное расположение текста и прогресс-бара */
+    align-items: flex-end; /* Выровнять вправо */
+    color: #b0c4de;
+    font-size: 14px;
+}
+
+.progress-bar {
+    width: 200px;
+    height: 8px;
+    background-color: #394a5a;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+.progress-bar__fill {
+    height: 100%;
+    background-color: #28a745;
+    transition: width 0.3s ease;
+}
+
+
+/* Навигация между вкладками */
+.project-detail__tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    padding: 10px 15px;
+    background-color: #394a5a;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.tab-button.active {
+    background-color: #447aaf;
+    font-weight: bold;
+}
+
+/* Основной контейнер для описания */
+#project-description-container {
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    min-height: 50px;
+    display: inline-block;
+}
+
+/* Стили текста описания */
+#project-description {
+    font-size: 16px;
+    outline: none;
+    width: 100%;
+    color: #ffffff; /* Белый текст по умолчанию */
+}
+
+/* Плейсхолдер (серый текст) */
+#project-description.placeholder {
+    color: #6c757d; /* Серый цвет для плейсхолдера */
+}
+
+#project-description:focus {
+    outline: 2px solid #447aaf; /* Голубая рамка при фокусе */
+}
+
+
+/* Список задач */
+.project-detail__tasks {
+    margin-top: 20px;
+}
+
+.project-detail__tasks h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.tasks-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tasks-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #394a5a;
+}
+
+.tasks-list li a {
+    color: #b0c4de;
+    text-decoration: none;
+}
+
+.tasks-list li a:hover {
+    color: #ffffff;
+}
+
+/* Правый блок (sidebar) */
+.project-sidebar {
+    flex: 1;
+    padding: 20px;
+    background-color: #233b4f;
+    color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    min-width: 275px;
+}
+
+.project-sidebar__content p {
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: #b0c4de;
+}
+
+.project-sidebar__content p strong {
+    color: #ffffff;
+}
+
+.tasks-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1em;
+}
+
+.create-task-button {
+    padding: 1em 2.5em;
+    background-color: #447aaf; /* Цвет кнопки */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+}
+
+.create-task-button:hover {
+    background-color: #365e8c; /* Более темный цвет при наведении */
+}
+
+.project-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 8px; /* Более квадратная форма */
+    background-color: rgba(0, 0, 0, 0.1);
+    margin-right: 15px; /* Отступ между иконкой и текстом */
+}
+
+.project-icon {
+    width: 36px;
+    height: 36px;
+}
+
+/* Содержимое вкладок */
+.project-detail__content {
+    margin-top: 20px;
+}
+
+/* Скрываем неактивные вкладки */
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Стили кнопок вкладок */
+.tab-button.active {
+    background-color: #447aaf;
+    font-weight: bold;
+}
+
+
+.editable-field {
+    cursor: pointer;
+    border-bottom: 1px dashed #ccc;
+}
+
+.inline-select {
+    font-size: 1rem;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.add-task-placeholder {
+    font-size: 0.9em;
+    color: #007bff;
+    cursor: pointer;
+    margin: 8px 0;
+}
+
+.add-task-placeholder:hover {
+    text-decoration: underline;
+}
+
+.add-task-input {
+    display: flex;
+    align-items: center;
+    margin: 8px 0;
+}
+
+.add-task-input .task-title-input {
+    flex: 1;
+    margin-right: 8px;
+}
+
+.project-select-btn {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    font-size: 0.8em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+}
+
+.project-select-btn:hover {
+    background-color: #e2e6ea;
+}
+
+
+
+.members-list {
+    list-style: none;
+    padding: 0;
+    margin: 1em 0;
+}
+
+.members-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5em;
+}
+
+.remove-member-button {
+    padding: 0.3em 0.6em;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.remove-member-button:hover {
+    background-color: #c0392b;
+}
+
+#add-member-form {
+    margin-top: 1em;
+    display: flex;
+    gap: 0.5em;
+}
+
+#add-member-form input {
+    flex: 1;
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+#add-member-form button {
+    padding: 0.5em 1em;
+    background-color: #447aaf;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+

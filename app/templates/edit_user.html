@@ -1,31 +1,36 @@
 {% extends "base.html" %}
 {% block content %}
-    <h2>Редактировать пользователя "{{ user.username }}"</h2>
-    <form method="POST" action="{{ url_for('edit_user', user_id=user.id) }}">
-        {{ form.hidden_tag() }}
 
-        <div class="form-group">
-            {{ form.username.label }}<br>
-            {{ form.username(size=32, class="form-control") }}
-        </div>
+<form method="POST" action="{{ url_for('edit_user', user_id=user.id) }}">
+    {{ form.hidden_tag() }}
+    <h2 class="intro-screen">Редактировать пользователя "{{ user.username }}"</h2>
 
-        <div class="form-group">
-            {{ form.email.label }}<br>
-            {{ form.email(size=32, class="form-control") }}
-        </div>
+    <div class="form-group">
+        <label for="username" class="labell">Имя пользователя</label>
+        {{ form.username(size=32, class="form-control") }}
+    </div>
 
-        <!-- Добавьте все поля, как в форме создания -->
+    <div class="form-group">
+        <label for="email" class="labell">Электронная почта</label>
+        {{ form.email(size=32, class="form-control") }}
+    </div>
 
-        <div class="form-group">
-            {{ form.is_active.label }}
-            {{ form.is_active(class="form-check-input") }} <!-- Добавляем чекбокс для is_active -->
-        </div>
+    <div class="form-group">
+        <label for="roles" class="labell">Роли</label>
+        {{ form.roles(class="form-control", multiple="multiple") }}
+    </div>
 
-        <div class="form-group">
-            {{ form.password.label }} (оставьте пустым, чтобы не менять)<br>
-            {{ form.password(size=32, class="form-control") }}
-        </div>
+    <div class="form-group">
+        <label for="is_active" class="labell">Активен</label>
+        {{ form.is_active(class="form-check-input") }} <!-- Добавляем чекбокс для is_active -->
+    </div>
 
-        <button type="submit" class="btn btn-primary">Обновить пользователя</button>
-    </form>
+    <div class="form-group">
+        <label for="password" class="labell">Пароль (оставьте пустым, чтобы не менять)</label>
+        {{ form.password(size=32, class="form-control") }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Обновить пользователя</button>
+</form>
+
 {% endblock %}

@@ -2,7 +2,7 @@
 {% block content %}
 <div class="admin-panell">
     <h2>Админ панель - Проекты</h2>
-    <a href="{{ url_for('create_project') }}" class="admin-button-create">Создать проект</a>
+    <a href="{{ url_for('create_project_admin') }}" class="admin-button-create">Создать проект</a>
 
     <!-- Форма для множественного удаления -->
     <form id="bulk-delete-form" action="{{ url_for('delete_project') }}" method="post">

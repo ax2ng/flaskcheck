@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="admin-panell">
+    <h2>Админ панель - Приоритеты</h2>
+    <a href="{{ url_for('create_priority') }}" class="admin-button-create">Создать приоритет</a>
+
+    <!-- Форма для множественного удаления -->
+    <form id="bulk-delete-form" action="{{ url_for('delete_priority') }}" method="post">
+        <table class="admin-table">
+            <tr>
+                <th><input type="checkbox" id="select-all"/></th>
+                <th>Уровень</th>
+                <th>Действия</th>
+            </tr>
+            {% for priority in priorities %}
+            <tr>
+                <td>
+                    <input type="checkbox" name="priority_ids" value="{{ priority.id }}" class="select-priority-checkbox"/>
+                </td>
+                <td>{{ priority.level }}</td>
+                <td>
+                    <a href="{{ url_for('edit_priority', priority_id=priority.id) }}" class="admin-button-edit">Редактировать</a>
+                    <form action="{{ url_for('delete_priority') }}" method="post" style="display:inline;">
+                        <input type="hidden" name="priority_id" value="{{ priority.id }}"/>
+                        <button type="submit" class="admin-button-delete" onclick="return confirm('Вы уверены?');">
+                            Удалить
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <button type="submit" id="bulk-delete-button" class="admin-button-delete inactive">
+            Удалить выбранные
+        </button>
+    </form>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const selectAllCheckbox = document.getElementById('select-all');
+        const priorityCheckboxes = document.querySelectorAll('.select-priority-checkbox');
+        const bulkDeleteButton = document.getElementById('bulk-delete-button');
+
+        function updateButtonState() {
+            const anyChecked = Array.from(priorityCheckboxes).some(checkbox => checkbox.checked);
+            bulkDeleteButton.classList.toggle('inactive', !anyChecked);
+        }
+
+        selectAllCheckbox.addEventListener('change', () => {
+            priorityCheckboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+            updateButtonState();
+        });
+
+        priorityCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                updateButtonState();
+                if (!checkbox.checked) {
+                    selectAllCheckbox.checked = false;
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

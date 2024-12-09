@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="admin-dashboard">
+    <div class="admin-panel">
+        <h1 class="panel-title">АДМИН-ПАНЕЛЬ</h1>
+        <p class="panel-description">Добро пожаловать!</p>
+
+        <!-- Навигационные кнопки -->
+        <div class="panel-links">
+            {% set admin_links = [
+            ('admin_projects', 'Управление проектами'),
+            ('admin_tasks', 'Управление задачами'),
+            ('admin_users', 'Управление пользователями'),
+            ('admin_roles', 'Управление ролями'),
+            ('admin_project_stats', 'Управление статистиками проектов'),
+            ('admin_statuses', 'Управление статусами'),
+            ('admin_priorities', 'Управление приоритетами'),
+            ('admin_chat_messages', 'Управление сообщениями чата'),
+            ('admin_chat_rooms', 'Управление чат-комнатами')
+            ] %}
+
+            {% for link, title in admin_links %}
+            <a href="{{ url_for(link) }}" class="admin-button">{{ title }}</a>
+            {% endfor %}
+        </div>
+
+        <!-- Бэкап данных -->
+        <div class="backup-section">
+            <h3 class="backup-title">Управление бэкапами</h3>
+
+            <!-- Создание бэкапа -->
+            <div class="backup-actions">
+                <a href="{{ url_for('backup_database') }}" class="backup-button">
+                    <i class="fas fa-database"></i> Создать бэкап данных
+                </a>
+
+                {% if session.get('backup_file') %}
+                <!-- Скачивание бэкапа -->
+                <a href="{{ url_for('download_backup') }}" class="backup-button" style="margin-left: 5px;">
+                    <i class="fas fa-download"></i> Скачать бэкап
+                </a>
+                {% endif %}
+            </div>
+
+
+            <!-- Загрузка бэкапа -->
+            <div class="upload-section">
+                <h4 class="upload-title">Загрузить бэкап</h4>
+                <form action="{{ url_for('upload_backup') }}" method="post" enctype="multipart/form-data"
+                      class="upload-form">
+                    <div class="file-upload-container">
+                        <label for="file-upload" class="file-upload-label">
+                            <i class="fas fa-upload"></i> Выберите файл
+                        </label>
+                        <input type="file" id="file-upload" name="file" class="file-upload-input" required/>
+                        <span id="file-name" class="file-name">Файл не выбран</span>
+                    </div>
+                    <button type="submit" class="upload-button">
+                        <i class="fas fa-cloud-upload-alt"></i> Загрузить
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // Обработчик для отображения имени выбранного файла
+        document.addEventListener("DOMContentLoaded", () => {
+            const fileInput = document.getElementById("file-upload");
+            const fileName = document.getElementById("file-name");
+
+            fileInput.addEventListener("change", () => {
+                fileName.textContent = fileInput.files.length > 0
+                    ? fileInput.files[0].name
+                    : "Файл не выбран";
+            });
+        });
+    </script>
+
+
+</section>
+
+{% endblock %}

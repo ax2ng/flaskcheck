@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
-    <h2>Редактировать роль "{{ role.name }}"</h2>
+
     <form method="POST" action="{{ url_for('edit_role', role_id=role.id) }}">
+        <h2>Редактировать роль "{{ role.name }}"</h2>
         {{ form.hidden_tag() }}
 
         <div class="form-group">

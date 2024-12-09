@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+
+<form method="POST" action="{{ url_for('edit_chat_room', room_id=chat_room.id) }}">
+    <h2>Редактировать чат-комнату ID {{ chat_room.id }}</h2>
+    {{ form.hidden_tag() }}
+
+    <div class="form-group">
+        {{ form.project_id.label }}<br>
+        {{ form.project_id(class="form-control") }}
+    </div>
+
+    <div class="form-group">
+        {{ form.task_id.label }}<br>
+        {{ form.task_id(class="form-control") }}
+    </div>
+
+    <div class="form-group">
+        {{ form.type.label }}<br>
+        {{ form.type(value=chat_room.type, class="form-control") }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
+</form>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="admin-panell">
+    <h2>Админ панель - Сообщения чата</h2>
+    <a href="{{ url_for('create_chat_message') }}" class="admin-button-create">Создать сообщение</a>
+
+    <!-- Форма для множественного удаления -->
+    <form id="bulk-delete-form" action="{{ url_for('delete_chat_message') }}" method="post">
+        <table class="admin-table">
+            <tr>
+                <th><input type="checkbox" id="select-all"/></th>
+                <th>Чат-комната</th>
+                <th>Пользователь</th>
+                <th>Сообщение</th>
+                <th>Время отправки</th>
+                <th>Действия</th>
+            </tr>
+            {% for message in chat_messages %}
+            <tr>
+                <td>
+                    <input type="checkbox" name="message_ids" value="{{ message.id }}" class="select-message-checkbox"/>
+                </td>
+                <td>{{ message.chat_room.id }}</td>
+                <td>{{ message.user.username }}</td>
+                <td>{{ message.content }}</td>
+                <td>{{ message.timestamp }}</td>
+                <td>
+                    <a href="{{ url_for('edit_chat_message', message_id=message.id) }}" class="admin-button-edit">Редактировать</a>
+                    <form action="{{ url_for('delete_chat_message') }}" method="post" style="display:inline;">
+                        <input type="hidden" name="message_id" value="{{ message.id }}"/>
+                        <button type="submit" class="admin-button-delete" onclick="return confirm('Вы уверены?');">
+                            Удалить
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <button type="submit" id="bulk-delete-button" class="admin-button-delete inactive">
+            Удалить выбранные
+        </button>
+    </form>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const selectAllCheckbox = document.getElementById('select-all');
+        const messageCheckboxes = document.querySelectorAll('.select-message-checkbox');
+        const bulkDeleteButton = document.getElementById('bulk-delete-button');
+
+        function updateButtonState() {
+            const anyChecked = Array.from(messageCheckboxes).some(checkbox => checkbox.checked);
+            bulkDeleteButton.classList.toggle('inactive', !anyChecked);
+        }
+
+        selectAllCheckbox.addEventListener('change', () => {
+            messageCheckboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+            updateButtonState();
+        });
+
+        messageCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                updateButtonState();
+                if (!checkbox.checked) {
+                    selectAllCheckbox.checked = false;
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

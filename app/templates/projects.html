@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="projects">
+    <!-- Заголовок страницы -->
+    <div class="projects__header">
+        <div class="projects__title-container">
+            <!-- Заголовок становится ссылкой -->
+            <a href="{{ url_for('projects') }}" class="projects__title-link"
+               style="text-decoration: none; color: inherit; transition: color 0.3s ease;">
+                <h1 class="projects__title">Проекты</h1>
+            </a>
+            <!-- Поисковая форма -->
+            <div class="projects__filters">
+                <form action="{{ url_for('projects') }}" method="get" class="projects__search-form">
+                    <input
+                            type="text"
+                            name="search"
+                            placeholder="Поиск..."
+                            class="projects__search-input"
+                            value="{{ request.args.get('search', '') }}"
+                    />
+                    <select name="sort" class="projects__sort-select" onchange="this.form.submit()">
+                        <option value="" {% if not request.args.get(
+                        'sort') %}selected{% endif %}>Сортировать</option>
+                        <option value="title_asc" {% if request.args.get(
+                        'sort') == 'title_asc' %}selected{% endif %}>
+                        Название ↑
+                        </option>
+                        <option value="title_desc" {% if request.args.get(
+                        'sort') == 'title_desc' %}selected{% endif %}>
+                        Название ↓
+                        </option>
+                        <option value="date_asc" {% if request.args.get(
+                        'sort') == 'date_asc' %}selected{% endif %}>
+                        Срок ↑
+                        </option>
+                        <option value="date_desc" {% if request.args.get(
+                        'sort') == 'date_desc' %}selected{% endif %}>
+                        Срок ↓
+                        </option>
+                        <option value="priority_asc" {% if request.args.get(
+                        'sort') == 'priority_asc' %}selected{% endif %}>
+                        Приоритет ↑
+                        </option>
+                        <option value="priority_desc" {% if request.args.get(
+                        'sort') == 'priority_desc' %}selected{% endif %}>
+                        Приоритет ↓
+                        </option>
+                    </select>
+                </form>
+            </div>
+        </div>
+        <div class="projects__actions">
+            <!-- Кнопка Экспорт -->
+            {% if current_user.has_role('admin') or current_user.has_role('manager') or
+            current_user.has_role('responsible') %}
+            <form action="{{ url_for('export_projects') }}" method="get">
+                <button class="projects__icon-button">
+                    <img src="{{ url_for('static', filename='img/excel.png') }}" alt="Экспорт">
+                </button>
+            </form>
+            {% endif %}
+
+            <!-- Кнопка Создать проект -->
+            {% if current_user.has_role('admin') or current_user.has_role('manager') %}
+            <form action="{{ url_for('create_project') }}" method="post">
+                <button type="submit" class="projects__create-button">Создать проект</button>
+            </form>
+            {% endif %}
+        </div>
+
+    </div>
+
+
+    <!-- Названия столбцов -->
+    <div class="projects__columns">
+        <div class="projects__column-header">Проект</div>
+        <div class="projects__column-header">Управляющий</div>
+        <div class="projects__column-header">Ответственный</div>
+        <div class="projects__column-header">Статус</div>
+        <div class="projects__column-header">Приоритет</div>
+        <div class="projects__column-header">Дедлайн</div>
+    </div>
+
+    <!-- Список проектов -->
+    <div class="projects__list">
+        {% if projects %}
+        {% for project in projects %}
+        <div class="projects__row">
+            <!-- Название проекта с иконкой -->
+            <div class="projects__column projects__column--name">
+                <div class="project__name-container">
+                    <div class="project__icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36"
+                             fill="{{ project.icon_color }}">
+                            <rect x="3" y="3" width="18" height="18" rx="3" ry="3" fill="{{ project.icon_color }}"/>
+                            <rect x="6" y="6" width="12" height="2" rx="1" ry="1" fill="#ffffff"/>
+                            <rect x="6" y="10" width="8" height="2" rx="1" ry="1" fill="#ffffff"/>
+                            <rect x="6" y="14" width="10" height="2" rx="1" ry="1" fill="#ffffff"/>
+                        </svg>
+                    </div>
+                    <div class="project__title-container">
+                        <a href="{{ url_for('project_detail', project_id=project.id) }}" class="project__title-link">
+                            <h2>{{ project.title }}</h2>
+                        </a>
+                        <ul class="project__tasks">
+                            {% for task in project_tasks[project.id] %}
+                            <li class="project-task">
+                                <a href="{{ url_for('task_detail', task_id=task.id) }}">{{ task.title }}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Управляющий проектом -->
+            <!-- Управляющий проектом -->
+            <div class="projects__column projects__column--manager"
+                 title="{{ project.manager.first_name if project.manager.first_name else '' }} {{ project.manager.last_name if project.manager.last_name else '' }}">
+                <img src="{{ project.manager.avatar }}" alt="Manager Avatar" class="user__avatar">
+                {% if project.manager %}
+                {% if project.manager.first_name|length >= 11 %}
+                {{ project.manager.first_name }}
+                {% elif project.manager.first_name and project.manager.last_name %}
+                {{ project.manager.first_name }} {{ project.manager.last_name[0] }}.
+                {% elif project.manager.first_name %}
+                {{ project.manager.first_name }}
+                {% elif project.manager.last_name %}
+                {{ project.manager.last_name }}
+                {% else %}
+                {{ project.manager.username }}
+                {% endif %}
+                {% else %}
+                Не назначен
+                {% endif %}
+            </div>
+
+            <!-- Ответственный проект -->
+            <div class="projects__column projects__column--responsible"
+                 title="{{ project.responsible_user.first_name if project.responsible_user.first_name else '' }} {{ project.responsible_user.last_name if project.responsible_user.last_name else '' }}">
+                <img src="{{ project.responsible_user.avatar if project.responsible_user.avatar else '/static/default_avatar.png' }}"
+                     alt="Responsible Avatar"
+                     class="user__avatar">
+                {% if project.responsible_user %}
+                {% if project.responsible_user.first_name|length >= 11 %}
+                {{ project.responsible_user.first_name }}
+                {% elif project.responsible_user.first_name and project.responsible_user.last_name %}
+                {{ project.responsible_user.first_name }} {{ project.responsible_user.last_name[0] }}.
+                {% elif project.responsible_user.first_name %}
+                {{ project.responsible_user.first_name }}
+                {% elif project.responsible_user.last_name %}
+                {{ project.responsible_user.last_name }}
+                {% else %}
+                {{ project.responsible_user.username }}
+                {% endif %}
+                {% else %}
+                Не назначен
+                {% endif %}
+            </div>
+
+
+            <!-- Статус проекта -->
+            <div class="projects__column projects__column--status {{ project.status_name | lower | replace(' ', '-') if project.status_name else 'default' }}">
+                {{ project.status_name or "Без статуса" }}
+            </div>
+
+
+            <!-- Приоритет проекта -->
+            <div class="projects__column projects__column--priority">
+                {% if project.priority_level == "Низкий" %}
+                <span class="priority priority-low">Низкий</span>
+                {% elif project.priority_level == "Средний" %}
+                <span class="priority priority-medium">Средний</span>
+                {% elif project.priority_level == "Высокий" %}
+                <span class="priority priority-high">Высокий</span>
+                {% else %}
+                <span class="priority priority-default">Не задан</span>
+                {% endif %}
+            </div>
+
+
+            <!-- Дедлайн проекта -->
+            <div class="projects__column projects__column--deadline">
+                {{ project.end_date.strftime('%d.%m.%Y') if project.end_date else "Нет срока" }}
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="projects__row projects__row--no-projects">
+            <div class="projects__column" colspan="6" style="text-align: center;">
+                Нет проектов
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

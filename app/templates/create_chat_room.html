@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+
+<form method="POST" action="{{ url_for('create_chat_room') }}">
+    <h2>Создать чат-комнату</h2>
+    {{ form.hidden_tag() }}
+
+    <!-- Ошибки формы -->
+    {% if form.errors %}
+        <div class="alert alert-danger">
+            <ul>
+            {% for field, errors in form.errors.items() %}
+                {% for error in errors %}
+                    <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <div class="form-group">
+        {{ form.choice.label }}<br>
+        {{ form.choice() }}
+    </div>
+
+    {% if form.choice.data == 'project' or not form.choice.data %}
+        <div class="form-group">
+            {{ form.project_id.label }}<br>
+            {{ form.project_id(class="form-control") }}
+        </div>
+    {% endif %}
+
+    {% if form.choice.data == 'task' %}
+        <div class="form-group">
+            {{ form.task_id.label }}<br>
+            {{ form.task_id(class="form-control") }}
+        </div>
+    {% endif %}
+
+    <div class="form-group">
+        {{ form.type.label }}<br>
+        {{ form.type(class="form-control") }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
+</form>
+
+{% endblock %}

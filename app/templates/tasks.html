@@ -8,10 +8,11 @@
         <div class="column-header" draggable="true" ondragstart="dragColumn(event)">
             <h3 contenteditable="true" spellcheck="false"
                 onfocus="fixCursorPosition(event)"
-                oninput="saveColumnName('not-started')">Не начато</h3>
+                oninput="saveColumnName('not-started')">Не начато
+            </h3>
         </div>
         <div class="tasks-container">
-            {% for task in tasks if task.status.name == 'Not Started' %}
+            {% for task in tasks if task.status.name == 'Не начато' %}
             <div class="task card mb-3 not-started"
                  data-task-id="{{ task.id }}"
                  draggable="true"
@@ -32,7 +33,7 @@
                 oninput="saveColumnName('in-progress')">В процессе выполнения</h3>
         </div>
         <div class="tasks-container">
-            {% for task in tasks if task.status.name == 'In Progress' %}
+            {% for task in tasks if task.status.name == 'В процессе' %}
             <div class="task card mb-3 in-progress"
                  data-task-id="{{ task.id }}"
                  draggable="true"
@@ -53,7 +54,7 @@
                 oninput="saveColumnName('completed')">Выполнено</h3>
         </div>
         <div class="tasks-container">
-            {% for task in tasks if task.status.name == 'Completed' %}
+            {% for task in tasks if task.status.name == 'Выполнено' %}
             <div class="task card mb-3 completed"
                  data-task-id="{{ task.id }}"
                  draggable="true"
@@ -68,5 +69,5 @@
 
 </div>
 
-
+<script src="{{ url_for('static', filename='js/drag-and-drop.js') }}"></script>
 {% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+
+<form method="POST" action="{{ url_for('create_priority') }}">
+    <h2>Создать приоритет</h2>
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        {{ form.level.label }}<br>
+        {{ form.level(size=32, class="form-control") }}
+    </div>
+    <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
+</form>
+{% endblock %}

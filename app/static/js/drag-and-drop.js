@@ -186,6 +186,69 @@ function loadColumnOrder() {
     }
 }
 
+function handleTaskInput(event, columnId) {
+    if (event.key === "Enter") {
+        const inputElement = event.target;
+        const taskTitle = inputElement.value.trim();
+        if (taskTitle) {
+            // Отправка задачи на сервер
+            addTaskToDatabase(taskTitle, columnId);
+            inputElement.value = ''; // Очистить поле ввода
+        }
+    }
+}
+
+function addTaskToDatabase(taskTitle, columnId) {
+    fetch('/add-task', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            title: taskTitle,
+            status: columnId
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Добавление задачи в DOM
+            const tasksContainer = document.querySelector(`#${columnId} .tasks-container`);
+            const taskElement = createTaskElement(data.task);
+            tasksContainer.appendChild(taskElement);
+        } else {
+            alert('Ошибка при добавлении задачи');
+        }
+    })
+    .catch(error => console.error('Ошибка:', error));
+}
+
+function createTaskElement(task) {
+    const taskDiv = document.createElement('div');
+    taskDiv.className = `task card mb-3 ${task.status}`;
+    taskDiv.setAttribute('data-task-id', task.id);
+    taskDiv.setAttribute('draggable', 'true');
+    taskDiv.setAttribute('ondragstart', 'dragTask(event)');
+
+    const cardBody = document.createElement('div');
+    cardBody.className = 'card-body';
+
+    const cardTitle = document.createElement('h5');
+    cardTitle.className = 'card-title';
+    cardTitle.textContent = task.title;
+
+    cardBody.appendChild(cardTitle);
+    taskDiv.appendChild(cardBody);
+
+    return taskDiv;
+}
+
+
+
+
+
+
+
 // === Инициализация ===
 
 function initializeEventHandlers() {

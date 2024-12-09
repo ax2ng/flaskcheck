@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>{% if project %}Добавить задачу в проект "{{ project.title }}"{% else %}Создать задачу{% endif %}</h2>
+
 
     <form method="post">
         {{ form.hidden_tag() }}
+
+        <h2 class="create_task_title">{% if project %}Добавить задачу в проект "{{ project.title }}"{% else %}Создать задачу{% endif %}</h2>
 
         <div class="form-group">
             {{ form.title.label }} {{ form.title(class="form-control") }}

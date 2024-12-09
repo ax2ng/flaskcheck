@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+
+<form method="POST" action="{{ url_for('create_chat_message') }}">
+    <h2>Создать сообщение чата</h2>
+    {{ form.hidden_tag() }}
+
+    <div class="form-group">
+        {{ form.chat_room_id.label }}<br>
+        {{ form.chat_room_id(class="form-control") }}
+    </div>
+
+    <div class="form-group">
+        {{ form.user_id.label }}<br>
+        {{ form.user_id(class="form-control") }}
+    </div>
+
+    <div class="form-group">
+        {{ form.content.label }}<br>
+        {{ form.content(rows=4, class="form-control") }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
+</form>
+{% endblock %}

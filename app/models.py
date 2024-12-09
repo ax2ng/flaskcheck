@@ -1,4 +1,6 @@
 from datetime import datetime, timezone
+from random import choice
+
 import sqlalchemy as sa
 import sqlalchemy.orm as so
 from flask_login import UserMixin
@@ -67,17 +69,20 @@ class Project(db.Model):
     __tablename__ = 'projects'
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     title: so.Mapped[str] = so.mapped_column(sa.String(128), index=True)
-    description: so.Mapped[str] = so.mapped_column(sa.String(500))
-    start_date: so.Mapped[datetime] = so.mapped_column(default=lambda: datetime.now(timezone.utc))
+    description: so.Mapped[str] = so.mapped_column(sa.String(500), nullable=True)
+    start_date: so.Mapped[datetime] = so.mapped_column(nullable=True)
     end_date: so.Mapped[datetime] = so.mapped_column(nullable=True)
     status_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey('statuses.id'), nullable=False)
-    priority_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey('priorities.id'), nullable=False)
+    priority_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey('priorities.id'), nullable=True)
     created_at: so.Mapped[datetime] = so.mapped_column(default=lambda: datetime.now(timezone.utc))
     updated_at: so.Mapped[datetime] = so.mapped_column(default=lambda: datetime.now(timezone.utc),
                                                        onupdate=lambda: datetime.now(timezone.utc))
 
     manager_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey('users.id'))
     responsible_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey('users.id'), nullable=True)
+
+    icon_color = so.mapped_column(sa.String(7),
+                                  default=lambda: choice(["#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#33FFF6"]))
 
     status = so.relationship('Status')
     priority = so.relationship('Priority')
@@ -114,7 +119,7 @@ class File(db.Model):
     __tablename__ = 'files'
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey('users.id'), nullable=False)
-    project_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey('projects.id'), nullable=True)
+    project_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey('projects.id', ondelete='CASCADE'), nullable=True)
     task_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey('tasks.id'), nullable=True)
     chat_message_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey('chat_messages.id'), nullable=True)
     file_url: so.Mapped[str] = so.mapped_column(sa.String(255), nullable=False)
@@ -124,7 +129,7 @@ class File(db.Model):
 class ChatRoom(db.Model):
     __tablename__ = 'chat_rooms'
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
-    project_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey('projects.id'), nullable=True)
+    project_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey('projects.id', ondelete='CASCADE'), nullable=True)
     task_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey('tasks.id'), nullable=True)
     created_at: so.Mapped[datetime] = so.mapped_column(default=lambda: datetime.now(timezone.utc))
     type: so.Mapped[str] = so.mapped_column(sa.String(50))
@@ -134,14 +139,13 @@ class ChatRoom(db.Model):
 class ChatMessage(db.Model):
     __tablename__ = 'chat_messages'
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
-    chat_room_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey('chat_rooms.id'))
+    chat_room_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey('chat_rooms.id', ondelete='CASCADE'))
     user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey('users.id'))
     content: so.Mapped[str] = so.mapped_column(sa.Text, nullable=True)
     timestamp: so.Mapped[datetime] = so.mapped_column(default=lambda: datetime.now(timezone.utc))
 
     chat_room = so.relationship('ChatRoom', back_populates='messages')
     user = so.relationship('User')
-    files: so.WriteOnlyMapped['File'] = so.relationship('File', backref='chat_message')
 
     def __repr__(self):
         return f'<ChatMessage {self.id} from User {self.user_id}>'
@@ -177,8 +181,8 @@ class Post(db.Model):
 # Таблицы для связей многих ко многим
 project_executors = db.Table(
     'project_executors',
-    db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
-    db.Column('project_id', db.Integer, db.ForeignKey('projects.id'), primary_key=True)
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), primary_key=True),
+    db.Column('project_id', db.Integer, db.ForeignKey('projects.id', ondelete='CASCADE'), primary_key=True)
 )
 
 task_executors = db.Table(

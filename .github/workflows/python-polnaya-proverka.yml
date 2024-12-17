@@ -1,13 +1,13 @@
-name: Code collector
+name: PythonMagick
 
 on:
   push:
     branches:
-      - vetka
+      - gitactions
 
   pull_request:
     branches:
-      - vetka
+      - gitactions
 
 jobs:
   collect_code_project:
@@ -19,7 +19,7 @@ jobs:
       - name: Set Python version
         uses: actions/setup-python@v2
         with:
-          python-version: '3.9.6'
+          python-version: '3.12.0'
 
       - name: Install dependencies
         run: |

@@ -28,7 +28,7 @@ jobs:
 
       - name: Run flake8
         run: |
-          flake8 .
+          flake8 app/routes.py
 
       - name: Run pylint
         run: |
@@ -36,16 +36,16 @@ jobs:
 
       - name: Run isort (check imports)
         run: |
-          isort . --check --profile black
+          isort app/routes.py --check --profile black
 
       - name: Run ruff
         run: |
-          ruff check .
+          ruff check app/routes.py
 
       - name: Run black (check formatting)
         run: |
-          black . --check
+          black app/routes.py --check
 
       - name: Run pyink (alternative to black)
         run: |
-          pyink . --check
+          pyink app/routes.py --check

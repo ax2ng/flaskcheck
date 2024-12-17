@@ -1,0 +1,51 @@
+name: Code collector
+
+on:
+  push:
+    branches:
+      - vetka
+
+  pull_request:
+    branches:
+      - vetka
+
+jobs:
+  collect_code_project:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone repo
+        uses: actions/checkout@v2
+
+      - name: Set Python version
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9.6'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 pylint isort ruff black pyink
+
+      - name: Run flake8
+        run: |
+          flake8 .
+
+      - name: Run pylint
+        run: |
+          pylint $(git ls-files '*.py')
+
+      - name: Run isort (check imports)
+        run: |
+          isort . --check --profile black
+
+      - name: Run ruff
+        run: |
+          ruff check .
+
+      - name: Run black (check formatting)
+        run: |
+          black . --check
+
+      - name: Run pyink (alternative to black)
+        run: |
+          pyink . --check

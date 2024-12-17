@@ -29,29 +29,29 @@ jobs:
       - name: Run flake8
         continue-on-error: true
         run: |
-          flake8 app/init.py
+          flake8 app/__init__.py
 
       - name: Run pylint
         continue-on-error: true
         run: |
-          pylint app/init.py
+          pylint app/__init__.py
 
       - name: Run isort
         continue-on-error: true
         run: |
-          isort app/init.py
+          isort app/__init__.py
 
       - name: Run ruff
         continue-on-error: true
         run: |
-          ruff check app/init.py
+          ruff check app/__init__.py
 
       - name: Run black
         continue-on-error: true
         run: |
-          black app/init.py
+          black app/__init__.py
 
       - name: Run pyink
         continue-on-error: true
         run: |
-          pyink app/init.py
+          pyink app/__init__.py

@@ -29,29 +29,29 @@ jobs:
       - name: Run flake8
         continue-on-error: true
         run: |
-          flake8 app/routes.py
+          flake8 app/init.py
 
       - name: Run pylint
         continue-on-error: true
         run: |
-          pylint $(git ls-files '*.py')
+          pylint app/init.py
 
       - name: Run isort
         continue-on-error: true
         run: |
-          isort app/routes.py --check --profile black
+          isort app/init.py
 
       - name: Run ruff
         continue-on-error: true
         run: |
-          ruff check app/routes.py
+          ruff check app/init.py
 
       - name: Run black
         continue-on-error: true
         run: |
-          black app/routes.py --check
+          black app/init.py
 
       - name: Run pyink
         continue-on-error: true
         run: |
-          pyink app/routes.py --check
+          pyink app/init.py

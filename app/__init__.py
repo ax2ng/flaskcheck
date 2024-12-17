@@ -16,10 +16,14 @@ migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
 
+
 # Загрузчик пользователя для Flask-Login
+
 @login.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+
 
 # Настройки логирования
 if not app.debug:

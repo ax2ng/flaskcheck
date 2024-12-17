@@ -41,10 +41,12 @@ if not app.debug:
         mail_handler.setLevel(logging.ERROR)
         app.logger.addHandler(mail_handler)
 
-    if not any(isinstance(handler, RotatingFileHandler) for handler in app.logger.handlers):
+    if not any(isinstance(handler, RotatingFileHandler) for handler in
+               app.logger.handlers):
         if not os.path.exists('logs'):
             os.mkdir('logs')
-        file_handler = RotatingFileHandler('logs/microblog.log', maxBytes=100000,
+        file_handler = RotatingFileHandler('logs/microblog.log',
+                                           maxBytes=100000,
                                            backupCount=10)
         file_handler.setFormatter(logging.Formatter(
             '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))

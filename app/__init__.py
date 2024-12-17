@@ -24,7 +24,6 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-
 # Настройки логирования
 if not app.debug:
     if app.config['MAIL_SERVER']:

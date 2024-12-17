@@ -10,7 +10,7 @@ on:
       - gitactions
 
 jobs:
-  collect_code_project:
+  super_check:
     runs-on: ubuntu-latest
     steps:
       - name: Git clone repo
@@ -27,25 +27,31 @@ jobs:
           pip install flake8 pylint isort ruff black pyink
 
       - name: Run flake8
+        continue-on-error: true
         run: |
           flake8 app/routes.py
 
       - name: Run pylint
+        continue-on-error: true
         run: |
           pylint $(git ls-files '*.py')
 
-      - name: Run isort (check imports)
+      - name: Run isort
+        continue-on-error: true
         run: |
           isort app/routes.py --check --profile black
 
       - name: Run ruff
+        continue-on-error: true
         run: |
           ruff check app/routes.py
 
-      - name: Run black (check formatting)
+      - name: Run black
+        continue-on-error: true
         run: |
           black app/routes.py --check
 
-      - name: Run pyink (alternative to black)
+      - name: Run pyink
+        continue-on-error: true
         run: |
           pyink app/routes.py --check

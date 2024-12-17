@@ -34,8 +34,9 @@
             <button class="tab-button active" data-tab="about">О проекте</button>
             <button class="tab-button" data-tab="tasks">Список задач</button>
             <button class="tab-button" data-tab="members">Участники</button>
-            <button class="tab-button" data-tab="gantt">Диаграмма Ганта</button>
-            <button class="tab-button" data-tab="board">Доска задач</button>
+            <button class="tab-button" data-tab="gantt">Диаграмма</button>
+            <!--            <button class="tab-button" data-tab="gantt">Диаграмма Ганта</button>-->
+            <!--            <button class="tab-button" data-tab="board">Доска задач</button>-->
         </div>
 
         <!-- Содержимое вкладок -->
@@ -65,11 +66,17 @@
                 </div>
                 <ul class="tasks-list">
                     {% for task in tasks %}
-                    <li>
-                        <a href="{{ url_for('task_detail', task_id=task.id) }}">{{ task.title }}</a>
+                    <li class="task-item">
+                        <a href="{{ url_for('task_detail', task_id=task.id) }}" class="task-link">
+                            <span class="task-title">{{ task.title }}</span>
+                            <span class="task-status">[{{ task.status.name }}]</span>
+                            <span class="task-deadline">- До {{ task.deadline.strftime('%d.%m.%Y') if task.deadline else 'Без срока' }}</span>
+                        </a>
                     </li>
                     {% endfor %}
                 </ul>
+
+
             </div>
 
             <!-- Вкладка "Участники" -->
@@ -101,7 +108,11 @@
 
 
             <!-- Вкладки "Диаграмма Ганта" и "Доска задач" можно реализовать позже -->
-            <div class="tab-content gantt-tab">Диаграмма Ганта (в разработке)</div>
+            <!--            <div class="tab-content gantt-tab">Диаграмма Ганта (в разработке)</div>-->
+            <div class="tab-content gantt-tab">
+                <canvas id="taskChart" width="400" height="400"></canvas>
+            </div>
+
             <div class="tab-content board-tab">Доска задач (в разработке)</div>
         </div>
     </div>
@@ -230,6 +241,7 @@
         <p><strong>Дата обновления:</strong> {{ project.updated_at.strftime('%d.%m.%Y %H:%M:%S')}}</p>
     </aside>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         // Уведомление пользователя
@@ -269,6 +281,45 @@
             showAlert('Произошла ошибка при удалении участника.', 'danger');
         });
 }
+  function renderChart(completedTasks, totalTasks) {
+        const remainingTasks = totalTasks - completedTasks;
+
+        const data = {
+            labels: ['Завершено', 'Осталось'],
+            datasets: [{
+                data: [completedTasks, remainingTasks],
+                backgroundColor: ['#4CAF50', '#FF5722'],
+            }]
+        };
+
+        const config = {
+            type: 'pie',
+            data: data,
+            options: {
+                responsive: true, // Адаптивность
+                maintainAspectRatio: false, // Отключаем соотношение сторон
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'bottom',
+                    }
+                }
+            }
+        };
+
+        const ctx = document.getElementById('taskChart').getContext('2d');
+        new Chart(ctx, config);
+    }
+
+    // Пример данных
+    const completedTasks = parseInt('{{ completed_tasks }}');
+    const totalTasks = parseInt('{{ total_tasks }}');
+    if (!isNaN(completedTasks) && !isNaN(totalTasks)) {
+        renderChart(completedTasks, totalTasks);
+    }
+
+
+
 function handlePlaceholder(element, placeholderText, updateUrl, key) {
     // Устанавливаем текст-заполнитель, если поле пустое
     if (!element.innerText.trim()) {
@@ -494,7 +545,6 @@ const responsibleField = document.getElementById('responsible-field');
 if (responsibleField) {
     handleSelectEditable(responsibleField, '/get_users', '{{ url_for("update_project_field", project_id=project.id) }}', 'responsible_user');
 }
-
 
             // Настройка вкладок
             setupTabs();

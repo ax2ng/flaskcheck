@@ -2178,6 +2178,9 @@ h3[contenteditable="true"]:focus {
     list-style: none;
     padding: 0;
     margin: 0;
+     background-color: #2e3b4e; /* Фон списка */
+    border-radius: 8px; /* Слегка закругленные углы */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Тень для объема */
 }
 
 .tasks-list li {
@@ -2186,13 +2189,70 @@ h3[contenteditable="true"]:focus {
 }
 
 .tasks-list li a {
-    color: #b0c4de;
+    color: #ffffff;
     text-decoration: none;
 }
 
 .tasks-list li a:hover {
-    color: #ffffff;
+   color: #b0c4de;
 }
+
+/* Стили для каждого элемента списка */
+.task-item {
+    border-bottom: 1px solid #394a5a; /* Разделитель между задачами */
+    padding: 0; /* Убираем внутренние отступы */
+}
+
+/* Последний элемент без разделителя */
+.task-item:last-child {
+    border-bottom: none;
+}
+
+/* Стили для ссылки (контейнер задачи) */
+.task-link {
+    display: flex; /* Используем flexbox для горизонтального расположения элементов */
+    justify-content: space-between; /* Разделяем элементы по краям */
+    align-items: center; /* Выравниваем элементы по вертикали */
+    padding: 15px 20px; /* Увеличенные отступы */
+    text-decoration: none; /* Убираем подчеркивание у текста */
+    color: #b0c4de; /* Цвет текста */
+    background-color: #2e3b4e; /* Фон задачи */
+    border-radius: 4px; /* Слегка скругленные углы */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Плавный переход при наведении */
+}
+
+/* Стили для состояния при наведении */
+.task-link:hover {
+    background-color: #394a5a; /* Темный фон при наведении */
+    color: #ffffff; /* Светлый текст при наведении */
+}
+
+/* Заголовок задачи */
+.task-title {
+    font-weight: bold; /* Жирный текст */
+    font-size: 16px; /* Размер текста */
+    flex: 2; /* Растягиваем элемент */
+}
+
+/* Статус задачи */
+.task-status {
+    color: #87ceeb; /* Голубой цвет для статуса */
+    font-style: italic; /* Наклонный шрифт */
+    font-size: 14px; /* Размер текста статуса */
+    flex: 1; /* Гибкая ширина */
+    text-align: center; /* Центрируем текст */
+}
+
+/* Дата завершения задачи */
+.task-deadline {
+    color: #ffa07a; /* Оранжевый цвет для даты */
+    font-size: 14px; /* Размер текста даты */
+    font-weight: bold; /* Полужирный шрифт */
+    flex: 1; /* Гибкая ширина */
+    text-align: right; /* Выравнивание по правому краю */
+}
+
+
 
 /* Правый блок (sidebar) */
 .project-sidebar {
@@ -2384,3 +2444,73 @@ h3[contenteditable="true"]:focus {
     cursor: pointer;
 }
 
+
+
+/* Контейнер для логов */
+.log-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #233b4f;
+    border: 0.5px solid #eeeeee;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 100px;
+}
+
+/* Заголовок логов */
+.log-header {
+    margin-bottom: 10px;
+}
+
+.log-header h1 {
+    color: #f3f3f3;
+    margin: 0;
+}
+
+/* Содержимое логов */
+.log-content {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-y: auto;
+    max-height: 400px; /* Максимальная высота контейнера логов */
+}
+
+.log-content .log-line {
+    padding: 5px;
+    border-bottom: 1px solid #eeeeee;
+    color: #f3f3f3;
+}
+
+.log-content .log-line:last-child {
+    border-bottom: none;
+}
+
+/* Цвета для уровней логов */
+.log-content .log-line .timestamp {
+    color: #666666;
+}
+
+.log-content .log-line .level {
+    font-weight: bold;
+}
+
+.log-content .log-line .level.error {
+    color: #ff0000; /* Красный цвет для ошибок */
+}
+
+.log-content .log-line .level.warning {
+    color: #ff9900; /* Оранжевый цвет для предупреждений */
+}
+
+.log-content .log-line .level.info {
+    color: #0099ff; /* Синий цвет для информации */
+}
+
+.log-content .log-line .level.debug {
+    color: #33cc33; /* Зеленый цвет для отладки */
+}
+
+.log-content .log-line .message {
+    color: #000000; /* Черный цвет для сообщений */
+}

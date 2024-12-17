@@ -4,7 +4,8 @@ import sqlite3
 import subprocess
 import threading
 from datetime import datetime, timezone
-from flask import render_template, flash, url_for, request, redirect, send_file, session, jsonify
+from flask import render_template, flash, url_for, request, redirect, send_file, session, jsonify, \
+    render_template_string
 from flask_login import current_user, login_user, logout_user, login_required
 import sqlalchemy as sa
 from urllib.parse import urlsplit, urlparse
@@ -13,6 +14,7 @@ import openpyxl
 from io import BytesIO
 
 from pytz import utc
+import json
 from werkzeug.utils import secure_filename
 
 from app import app, db
@@ -20,6 +22,25 @@ from app.forms import LoginForm, RegistrationForm, EditProfileForm, ProjectForm,
     ProjectStatisticsForm, StatusForm, PriorityForm, ChatMessageForm, ChatRoomForm, UserEditForm
 from app.models import User, Project, Task, Role, Status, Priority, ProjectStatistics, ChatMessage, ChatRoom, \
     project_executors
+
+# Путь к файлу логов
+log_file_path = 'logs/microblog.log'
+
+
+# Функция чтения логов
+def read_logs(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            logs = file.readlines()
+            return logs
+    except FileNotFoundError:
+        return ["Файл логов не найден"]
+
+
+@app.route('/logs')
+def show_logs():
+    logs = read_logs(log_file_path)
+    return render_template('logs.html', logs=logs)
 
 
 # Главная страница приложения
@@ -301,9 +322,18 @@ def project_detail(project_id):
         project.start_date.astimezone(utc).strftime('%Y-%m-%d %H:%M:%S') if project.start_date else None
     )
 
-    # Подсчет задач
-    completed_tasks = sum(1 for task in tasks if task.status and task.status.name == "Выполнено")
-    total_tasks = len(tasks)
+    # Попытка получить статистику проекта
+    project_stat = ProjectStatistics.query.filter_by(project_id=project_id).order_by(
+        ProjectStatistics.updated_at.desc()).first()
+
+    if project_stat:
+        # Используем сохраненные данные статистики
+        completed_tasks = project_stat.tasks_completed
+        total_tasks = project_stat.tasks_total
+    else:
+        # Если статистики нет, рассчитываем данные
+        completed_tasks = sum(1 for task in tasks if task.status and task.status.name == "Выполнено")
+        total_tasks = len(tasks)
 
     # Рендер страницы проекта
     return render_template(
@@ -800,40 +830,86 @@ def edit_project(project_id):
     return render_template('edit_project.html', form=form, project=project)
 
 
+# ТРАНЗАКЦИЯ
+from sqlalchemy.orm import scoped_session
+
+
 @app.route('/delete_project', methods=['POST'])
 @login_required
 def delete_project():
-    # Проверяем, передан ли список проектов для удаления (множественное удаление)
-    project_ids = request.form.getlist('project_ids')  # Получаем список ID из формы
+    session = scoped_session(db.session)
 
-    if project_ids:
-        # Удаляем каждый проект по ID
-        for project_id in project_ids:
-            project = Project.query.get(project_id)
-            if project:
-                # Удаляем связанные задачи
-                for task in project.tasks:
-                    db.session.delete(task)
-                db.session.delete(project)
-
-        db.session.commit()
-        flash("Выбранные проекты и связанные задачи успешно удалены.", "success")
-    else:
-        # Обрабатываем одиночное удаление, если список пуст (один project_id)
-        project_id = request.form.get('project_id')
-        if project_id:
-            project = Project.query.get_or_404(project_id)
-            # Удаление связанных задач
-            for task in project.tasks:
-                db.session.delete(task)
-
-            db.session.delete(project)
-            db.session.commit()
-            flash("Проект и связанные задачи успешно удалены.", "success")
+    project_ids = request.form.getlist('project_ids')
+    try:
+        if project_ids:
+            for project_id in project_ids:
+                project = session.query(Project).get(project_id)
+                if project:
+                    for task in project.tasks:
+                        session.delete(task)
+                    session.delete(project)
         else:
-            flash("Не выбрано ни одного проекта для удаления.", "error")
+            project_id = request.form.get('project_id')
+            if project_id:
+                project = session.query(Project).get_or_404(project_id)
+                for task in project.tasks:
+                    session.delete(task)
+                session.delete(project)
+            else:
+                flash("Не выбрано ни одного проекта для удаления.", "error")
+                return redirect(url_for('admin_projects'))
+
+        session.commit()
+        flash("Выбранные проекты и связанные задачи успешно удалены.", "success")
+    except Exception as e:
+        session.rollback()
+        flash(f"Ошибка при удалении проекта: {str(e)}", "error")
+    finally:
+        session.remove()  # Закрытие локальной сессии
 
     return redirect(url_for('admin_projects'))
+
+
+# Хранимая процедура
+
+from sqlalchemy import text
+
+@app.route('/create_project_with_tasks', methods=['POST'])
+def create_project_with_tasks():
+    try:
+        data = request.get_json()
+        project_title = data.get('title')
+        project_description = data.get('description')
+        tasks = data.get('tasks', [])
+
+        if not project_title or not tasks:
+            return jsonify({'error': 'Название проекта и задачи обязательны!'}), 400
+
+        # Получаем ID авторизованного пользователя
+        manager_id = 1
+
+        # Преобразуем задачи в JSON
+        tasks_json = json.dumps(tasks)
+
+        # Определяем SQL-запрос как text
+        query = text("""
+        CALL create_project_with_tasks(:project_title, :project_description, :manager_id, :tasks)
+        """)
+
+        # Выполняем запрос
+        db.session.execute(query, {
+            'project_title': project_title,
+            'project_description': project_description,
+            'manager_id': manager_id,
+            'tasks': tasks_json
+        })
+        db.session.commit()
+
+        return jsonify({'message': 'Проект и задачи успешно созданы!'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': f'Ошибка при выполнении: {str(e)}'}), 500
+
 
 
 # Роут для отображения всех задач в админке

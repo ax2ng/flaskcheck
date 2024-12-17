@@ -270,3 +270,624 @@ sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) attempt to write a r
 2024-11-22 12:14:42,004 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
 2024-11-22 12:52:23,083 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
 2024-11-22 13:24:04,597 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-12-10 15:59:48,486 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-12-10 16:00:26,230 ERROR: Exception on /edit_profile [POST] [in /Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py:838]
+Traceback (most recent call last):
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 941, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.errors.UniqueViolation: duplicate key value violates unique constraint "users_phone_number_key"
+DETAIL:  Key (phone_number)=(9999999999) already exists.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/routes.py", line 166, in edit_profile
+    db.session.commit()
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/orm/scoping.py", line 597, in commit
+    return self._proxied.commit()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2028, in commit
+    trans.commit(_to_root=True)
+  File "<string>", line 2, in commit
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 1313, in commit
+    self._prepare_impl()
+  File "<string>", line 2, in _prepare_impl
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 1288, in _prepare_impl
+    self.session.flush()
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 4352, in flush
+    self._flush(objects)
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 4487, in _flush
+    with util.safe_reraise():
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 4448, in _flush
+    flush_context.execute()
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/orm/unitofwork.py", line 466, in execute
+    rec.execute(self)
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/orm/unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/orm/persistence.py", line 85, in save_obj
+    _emit_update_statements(
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/orm/persistence.py", line 912, in _emit_update_statements
+    c = connection.execute(
+        ^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1418, in execute
+    return meth(
+           ^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1640, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2355, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 941, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.IntegrityError: (psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "users_phone_number_key"
+DETAIL:  Key (phone_number)=(9999999999) already exists.
+
+[SQL: UPDATE users SET phone_number=%(phone_number)s WHERE users.id = %(users_id)s]
+[parameters: {'phone_number': '9999999999', 'users_id': 1}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2024-12-13 10:27:46,262 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-12-13 10:39:52,362 ERROR: Exception on /static/img/favicon.ico [GET] [in /Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py:838]
+Traceback (most recent call last):
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 941, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.errors.UndefinedTable: relation "users" does not exist
+LINE 2: FROM users 
+             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 878, in full_dispatch_request
+    rv = self.preprocess_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 1253, in preprocess_request
+    rv = self.ensure_sync(before_func)()
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/routes.py", line 194, in before_request
+    if current_user.is_authenticated:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/werkzeug/local.py", line 318, in __get__
+    obj = instance._get_current_object()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/werkzeug/local.py", line 526, in _get_current_object
+    return get_name(local())
+                    ^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask_login/utils.py", line 25, in <lambda>
+    current_user = LocalProxy(lambda: _get_user())
+                                      ^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask_login/utils.py", line 370, in _get_user
+    current_app.login_manager._load_user()
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask_login/login_manager.py", line 364, in _load_user
+    user = self._user_callback(user_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py", line 22, in load_user
+    return User.query.get(int(user_id))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in get
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/util/deprecations.py", line 386, in warned
+    return fn(*args, **kwargs)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 1127, in get
+    return self._get_impl(ident, loading.load_on_pk_identity)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 1136, in _get_impl
+    return self.session._get_impl(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 3873, in _get_impl
+    return db_load_fn(
+           ^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/orm/loading.py", line 694, in load_on_pk_identity
+    session.execute(
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2362, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2247, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/orm/context.py", line 305, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1418, in execute
+    return meth(
+           ^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1640, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2355, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 941, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedTable) relation "users" does not exist
+LINE 2: FROM users 
+             ^
+
+[SQL: SELECT users.id AS users_id, users.username AS users_username, users.email AS users_email, users.password_hash AS users_password_hash, users.first_name AS users_first_name, users.last_name AS users_last_name, users.middle_name AS users_middle_name, users.phone_number AS users_phone_number, users.date_birth AS users_date_birth, users.avatar_url AS users_avatar_url, users.is_active AS users_is_active, users.creation_time AS users_creation_time, users.about_me AS users_about_me, users.last_seen AS users_last_seen 
+FROM users 
+WHERE users.id = %(pk_1)s]
+[parameters: {'pk_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-12-13 21:45:55,221 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-12-13 21:52:26,530 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-12-13 21:52:28,764 ERROR: Exception on /admin_page [GET] [in /Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py:838]
+Traceback (most recent call last):
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/routes.py", line 63, in admin_page
+    return render_template('admin_page.html', title='Админ Панель')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/templates/admin_page.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/templates/base.html", line 92, in top-level template code
+    <a href="{{ url_for('logs') }}">Админ-панель</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'logs'. Did you mean 'login' instead?
+2024-12-13 21:52:33,925 ERROR: Exception on /favicon.ico [GET] [in /Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py:838]
+Traceback (most recent call last):
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 854, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 463, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 765, in handle_user_exception
+    return self.handle_http_exception(e)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 740, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/errors.py", line 6, in not_found_error
+    return render_template('404.html'), 404
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/templates/404.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/templates/base.html", line 92, in top-level template code
+    <a href="{{ url_for('logs') }}">Админ-панель</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'logs'. Did you mean 'login' instead?
+2024-12-13 21:52:38,958 ERROR: Exception on /admin_page [GET] [in /Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py:838]
+Traceback (most recent call last):
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/routes.py", line 63, in admin_page
+    return render_template('admin_page.html', title='Админ Панель')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/templates/admin_page.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/templates/base.html", line 92, in top-level template code
+    <a href="{{ url_for('logs') }}">Админ-панель</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'logs'. Did you mean 'login' instead?
+2024-12-13 21:52:47,010 ERROR: Exception on /favicon.ico [GET] [in /Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py:838]
+Traceback (most recent call last):
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 854, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 463, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 765, in handle_user_exception
+    return self.handle_http_exception(e)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 740, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/errors.py", line 6, in not_found_error
+    return render_template('404.html'), 404
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/templates/404.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/templates/base.html", line 92, in top-level template code
+    <a href="{{ url_for('logs') }}">Админ-панель</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'logs'. Did you mean 'login' instead?
+2024-12-13 21:52:55,171 ERROR: Exception on /admin_page [GET] [in /Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py:838]
+Traceback (most recent call last):
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/routes.py", line 63, in admin_page
+    return render_template('admin_page.html', title='Админ Панель')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/templates/admin_page.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/templates/base.html", line 92, in top-level template code
+    <a href="{{ url_for('show_logs') }}">Админ-панель</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'logs'. Did you mean 'login' instead?
+2024-12-13 21:53:08,037 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-12-13 21:53:40,045 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-12-13 21:56:21,284 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-12-15 20:31:02,940 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-12-15 20:41:38,593 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-12-15 20:47:24,924 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-12-15 20:48:41,503 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-12-15 20:50:03,875 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-12-15 20:50:23,180 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-12-15 20:50:53,738 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-12-15 20:52:34,979 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-12-15 20:53:14,034 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-12-15 20:54:15,839 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-12-15 21:15:38,335 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-12-15 21:17:42,830 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-12-15 21:34:07,408 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-12-15 21:36:13,663 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-12-15 21:37:11,763 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-12-15 21:38:06,296 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-12-15 21:38:23,586 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-12-15 21:51:37,598 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]
+2024-12-15 21:51:44,986 ERROR: Exception on /projects [GET] [in /Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py:838]
+Traceback (most recent call last):
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/routes.py", line 298, in projects
+    return render_template('projects.html', projects=projects, project_tasks=project_tasks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/templates/projects.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/templates/base.html", line 124, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/templates/projects.html", line 148, in block 'content'
+    {% if project.responsible_user.first_name|length >= 11 %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2024-12-15 21:51:46,042 ERROR: Exception on /projects [GET] [in /Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py:838]
+Traceback (most recent call last):
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/routes.py", line 298, in projects
+    return render_template('projects.html', projects=projects, project_tasks=project_tasks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/templates/projects.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/templates/base.html", line 124, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/templates/projects.html", line 148, in block 'content'
+    {% if project.responsible_user.first_name|length >= 11 %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2024-12-15 21:51:53,992 ERROR: Exception on /projects [GET] [in /Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py:838]
+Traceback (most recent call last):
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/routes.py", line 298, in projects
+    return render_template('projects.html', projects=projects, project_tasks=project_tasks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/templates/projects.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/templates/base.html", line 124, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/templates/projects.html", line 148, in block 'content'
+    {% if project.responsible_user.first_name|length >= 11 %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2024-12-15 21:52:12,388 ERROR: Exception on /projects [GET] [in /Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py:838]
+Traceback (most recent call last):
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/routes.py", line 298, in projects
+    return render_template('projects.html', projects=projects, project_tasks=project_tasks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/.venv/lib/python3.12/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/templates/projects.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/templates/base.html", line 124, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dubinkerus/PycharmProjects/MegaTutorial/app/templates/projects.html", line 148, in block 'content'
+    {% if project.responsible_user.first_name|length >= 11 %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2024-12-15 21:54:49,649 INFO: Microblog startup [in /Users/dubinkerus/PycharmProjects/MegaTutorial/app/__init__.py:52]

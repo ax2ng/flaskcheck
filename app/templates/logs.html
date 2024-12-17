@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="log-container">
+        <div class="log-header">
+            <h1>Логи</h1>
+        </div>
+        <div class="log-content">
+            {% for log in logs %}
+                <div class="log-line">
+                    {{ log | safe }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

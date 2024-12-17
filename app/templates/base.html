@@ -90,6 +90,7 @@
                         <a href="{{ url_for('edit_profile') }}">Настройки профиля</a>
                         {% if current_user.is_authenticated and current_user.has_role('admin') %}
                         <a href="{{ url_for('admin_page') }}">Админ-панель</a>
+                        <a href="{{ url_for('show_logs') }}">Логи</a>
                         {% endif %}
                         <a href="{{ url_for('index') }}">Переключайся</a>
                         <a href="{{ url_for('logout') }}">Выйти</a>
